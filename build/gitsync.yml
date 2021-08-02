@@ -1,0 +1,10 @@
+trigger:
+- master
+
+pool:
+  vmImage: windows-latest
+
+steps:
+- task: gitsync@1
+  inputs:
+    GitRepoUrl: 'https://$(githubpersonaltoken)@github.com/thibaultmaudet/CognitiveServices.Explorer.git'

@@ -7,13 +7,38 @@
     xmlns:helpers="using:CognitiveServices.Explorer.Helpers"
     xmlns:xaml="using:Microsoft.UI.Xaml"
     mc:Ignorable="d"
-    Style="{StaticResource PageStyle}">
+    Style="{StaticResource PageStyle}" DataContext="ViewModel">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Page.Resources>
     <Grid Margin="{StaticResource MediumLeftRightMargin}">
         <StackPanel
             x:Name="ContentArea">
+            <TextBlock x:Uid="Settings_Api" Style="{ThemeResource SubtitleTextBlockStyle}" />
+            <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
+                <TextBlock x:Uid="Settings_Api_Face" />
+
+                <StackPanel Orientation="Horizontal" Margin="{StaticResource XSmallTopMargin}">
+                    <TextBlock Width="300" Height="50">
+                        <Run x:Uid="Settings_Api_Face_Endpoint" Text="" FontWeight="Bold"/>
+                        <LineBreak/>
+                        <Run x:Uid="Settings_Api_Endpoint" />
+                    </TextBlock>
+                    <TextBox x:Name="ApiFaceEndpointTextBox" Width="280" Height="37" Text="{x:Bind ViewModel.FaceEndpoint, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
+                </StackPanel>
+                <NavigationViewItemSeparator Height="21" Width="580" HorizontalAlignment="Left " />
+                <StackPanel Margin="{StaticResource XSmallTopMargin}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="300" Height="50">
+                            <Run x:Uid="Settings_Api_Face_Key" FontWeight="Bold" />
+                            <LineBreak />
+                            <Run x:Uid="Settings_Api_Key" />
+                        </TextBlock>
+                        <TextBox x:Name="ApiFaceKeyTextBox" Width="280" Height="37" Text="{x:Bind ViewModel.FaceKey, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_Theme" />
@@ -56,12 +81,6 @@
 
             <StackPanel Margin="{StaticResource XSmallTopMargin}">
                 <TextBlock Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" />
-
-                <TextBlock
-                    x:Uid="Settings_AboutDescription"
-                    Margin="{StaticResource XSmallTopMargin}"
-                    Style="{ThemeResource BodyTextBlockStyle}" />
-                <HyperlinkButton x:Uid="SettingsPage_PrivacyTermsLink" Margin="{StaticResource XSmallTopMargin}" />
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 using CognitiveServices.Explorer.Contracts.Services;
@@ -10,57 +11,97 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
+using Windows.Storage;
+using Windows.UI.Core;
 
 namespace CognitiveServices.Explorer.ViewModels
 {
     public class SettingsViewModel : ObservableRecipient
     {
-        private readonly IThemeSelectorService _themeSelectorService;
-        private ElementTheme _elementTheme;
+        private ElementTheme elementTheme;
+
+        private ICommand switchThemeCommand;
+
+        private readonly IThemeSelectorService themeSelectorService;
+
+        private string faceEndpoint;
+        private string faceKey;
+        private string versionDescription;
 
         public ElementTheme ElementTheme
         {
-            get { return _elementTheme; }
+            get => elementTheme;
 
-            set { SetProperty(ref _elementTheme, value); }
+            set => SetProperty(ref elementTheme, value);
         }
 
-        private string _versionDescription;
+        public string FaceEndpoint
+        {
+            get
+            {
+                if (ApplicationData.Current.LocalSettings.Values["FaceEndpoint"] != null)
+                    faceEndpoint = ApplicationData.Current.LocalSettings.Values["FaceEndpoint"].ToString();
+
+                return faceEndpoint;
+            }
+
+            set
+            {
+                ApplicationData.Current.LocalSettings.Values["FaceEndpoint"] = value;
+                SetProperty(ref faceEndpoint, value);
+            }
+        }
+        
+        public string FaceKey
+        {
+            get
+            {
+                if (ApplicationData.Current.LocalSettings.Values["FaceKey"] != null)
+                    faceKey = ApplicationData.Current.LocalSettings.Values["FaceKey"].ToString();
+
+                return faceKey;
+            }
+
+            set
+            {
+                ApplicationData.Current.LocalSettings.SaveString(nameof(FaceKey), value);
+                SetProperty(ref faceKey, value);
+            }
+        }
 
         public string VersionDescription
         {
-            get { return _versionDescription; }
+            get => versionDescription;
 
-            set { SetProperty(ref _versionDescription, value); }
+            set => SetProperty(ref versionDescription, value);
         }
-
-        private ICommand _switchThemeCommand;
 
         public ICommand SwitchThemeCommand
         {
             get
             {
-                if (_switchThemeCommand == null)
+                if (switchThemeCommand == null)
                 {
-                    _switchThemeCommand = new RelayCommand<ElementTheme>(
+                    switchThemeCommand = new RelayCommand<ElementTheme>(
                         async (param) =>
                         {
                             if (ElementTheme != param)
                             {
                                 ElementTheme = param;
-                                await _themeSelectorService.SetThemeAsync(param);
+                                await themeSelectorService.SetThemeAsync(param);
                             }
                         });
                 }
 
-                return _switchThemeCommand;
+                return switchThemeCommand;
             }
         }
 
         public SettingsViewModel(IThemeSelectorService themeSelectorService)
         {
-            _themeSelectorService = themeSelectorService;
-            _elementTheme = _themeSelectorService.Theme;
+            this.themeSelectorService = themeSelectorService;
+            elementTheme = themeSelectorService.Theme;
             VersionDescription = GetVersionDescription();
         }
 

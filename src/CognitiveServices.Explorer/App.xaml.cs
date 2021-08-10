@@ -4,7 +4,7 @@ using CognitiveServices.Explorer.Helpers;
 using CognitiveServices.Explorer.Services;
 using CognitiveServices.Explorer.ViewModels;
 using CognitiveServices.Explorer.Views;
-
+using CognitiveServices.Explorer.Views.Dialogs;
 using CommunityToolkit.Mvvm.DependencyInjection;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -56,6 +56,8 @@ namespace CognitiveServices.Explorer
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
+            services.AddSingleton<IAddGroupDialogService, AddGroupDialogService>();
+            services.AddSingleton<IFaceClientService, FaceClientService>();
 
             // Views and ViewModels
             services.AddTransient<ShellPage>();
@@ -64,6 +66,9 @@ namespace CognitiveServices.Explorer
             services.AddTransient<MainPage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
+            services.AddTransient<FacePeopleViewModel>();
+            services.AddTransient<FacePeoplePage>();
+            services.AddTransient<AddGroupDialog>();
             return services.BuildServiceProvider();
         }
     }

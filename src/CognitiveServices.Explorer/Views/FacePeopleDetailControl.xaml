@@ -4,8 +4,66 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:CognitiveServices.Explorer.Models"
     mc:Ignorable="d">
-    <Grid>
-        
-    </Grid>
+    <UserControl.Resources>
+        <DataTemplate x:Key="ImageTextTemplate" x:DataType="models:ExtendedPerson">
+            <Grid AutomationProperties.Name="{x:Bind Name}" Width="280">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <PersonPicture Contact="{x:Bind Contact}" Height="100" />
+                <StackPanel Grid.Column="1">
+                    <StackPanel Grid.Column="1" Grid.Row="0" Margin="8,0,0,8">
+                        <TextBlock Text="{x:Bind Name}" Style="{ThemeResource ListTitleStyle}" Margin="0,0,0,8"/>
+                        <TextBlock>
+                            <Run x:Uid="Face_Person_Face_Number" />
+                            <Run Text="{x:Bind PersistedFaceIds.Count}" />
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="8,20,0,8" Spacing="5">
+                        <Button Click="RemovePerson_Click" CommandParameter="{Binding}">
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe74d;"/>
+                            <ToolTipService.ToolTip>
+                                <ToolTip Placement="Mouse">
+                                    <TextBlock x:Uid="Face_Person_Remove"/>
+                                </ToolTip>
+                            </ToolTipService.ToolTip>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <ScrollViewer Name="ForegroundElement" HorizontalAlignment="Stretch" VerticalScrollMode="Enabled" Padding="{StaticResource DetailPageMargin}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" IsTabStop="True">
+        <StackPanel>
+            <Grid >
+                <TextBlock Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Text="{x:Bind ViewModel.SelectedPersonGroup.Name, Mode=OneWay}" Style="{ThemeResource TitleTextBlockStyle}" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.AddPersonCommand}">
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe710;" />
+                        <ToolTipService.ToolTip>
+                            <ToolTip Placement="Mouse">
+                                <TextBlock x:Uid="Face_Person_Add"/>
+                            </ToolTip>
+                        </ToolTipService.ToolTip>
+                    </Button>
+                    <Button Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.GetPeopleCommand}" HorizontalAlignment="Right">
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe72c;" />
+                        <ToolTipService.ToolTip>
+                            <ToolTip Placement="Mouse">
+                                <TextBlock x:Uid="Refresh"/>
+                            </ToolTip>
+                        </ToolTipService.ToolTip>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <GridView x:Name="ContentGridView" ItemsSource="{x:Bind ViewModel.People, Mode=OneWay}" ItemTemplate="{StaticResource ImageTextTemplate}" SelectionMode="None" Margin="0,30,0,0"/>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

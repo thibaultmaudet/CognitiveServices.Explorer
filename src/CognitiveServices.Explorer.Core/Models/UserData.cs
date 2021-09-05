@@ -9,5 +9,7 @@ namespace CognitiveServices.Explorer.Core.Models
     {
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
+        [JsonProperty(PropertyName = "pictureUrl")]
+        public string PictureUrl { get; set; }
     }
 }

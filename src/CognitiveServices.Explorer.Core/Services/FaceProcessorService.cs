@@ -2,6 +2,7 @@
 using CognitiveServices.Explorer.Core.Models;
 using Microsoft.Azure.CognitiveServices.Vision.Face;
 using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,9 +28,24 @@ namespace CognitiveServices.Explorer.Core.Services
             await faceClient.PersonGroup.CreateAsync(groupId, groupName, userData: userData, recognitionModel: recognitionModel);
         }
 
+        public async Task CreatePersonAsync(string groupId, string personName)
+        {
+            await CreatePersonAsync(groupId, personName, "");
+        }
+        
+        public async Task CreatePersonAsync(string groupId, string personName, string userData)
+        {
+            await faceClient.PersonGroupPerson.CreateAsync(groupId, personName, userData: userData);
+        }
+
         public async Task DeletePersonGroupAsync(string groupId)
         {
             await faceClient.PersonGroup.DeleteAsync(groupId);
+        }
+
+        public async Task DeletePersonAsync(string groupId, Guid personId)
+        {
+            await faceClient.PersonGroupPerson.DeleteAsync(groupId, personId);
         }
         
         public async Task<IList<PersonGroupWithUserData>> GetPersonGroupsAsync()
@@ -50,6 +66,26 @@ namespace CognitiveServices.Explorer.Core.Services
                 return personGroupWithUserDatas.OrderByDescending(x => x.Name).ToList();
 
             return personGroupWithUserDatas;
+        }
+        
+        public async Task<IList<PersonWithUserData>> GetPeopleAsync(string groupId)
+        {
+            return await GetPeopleAsync(groupId, SortOrder.Ascending);
+        }
+
+        public async Task<IList<PersonWithUserData>> GetPeopleAsync(string groupId, SortOrder sortOrder)
+        {
+            IList<PersonWithUserData> peopleWithUserData = new List<PersonWithUserData>();
+
+            foreach (Person person in await faceClient.PersonGroupPerson.ListAsync(groupId))
+                peopleWithUserData.Add(new(person));
+
+            if (sortOrder == SortOrder.Ascending)
+                return peopleWithUserData.OrderBy(x => x.Name).ToList();
+            else if (sortOrder == SortOrder.Descending)
+                return peopleWithUserData.OrderByDescending(x => x.Name).ToList();
+
+            return peopleWithUserData;
         }
     }
 }

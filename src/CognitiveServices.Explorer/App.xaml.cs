@@ -56,7 +56,7 @@ namespace CognitiveServices.Explorer
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
-            services.AddSingleton<IAddGroupDialogService, AddGroupDialogService>();
+            services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<IFaceClientService, FaceClientService>();
 
             // Views and ViewModels
@@ -69,6 +69,7 @@ namespace CognitiveServices.Explorer
             services.AddTransient<FacePeopleViewModel>();
             services.AddTransient<FacePeoplePage>();
             services.AddTransient<AddGroupDialog>();
+            services.AddTransient<AddPersonDialog>();
             return services.BuildServiceProvider();
         }
     }

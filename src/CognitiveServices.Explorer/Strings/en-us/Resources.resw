@@ -153,4 +153,7 @@
   <data name="Shell_AddGroupDialog.Content" xml:space="preserve">
     <value>AddGroupDialog</value>
   </data>
+  <data name="Shell_AddPeopleDialog.Content" xml:space="preserve">
+    <value>AddPeopleDialog</value>
+  </data>
 </root>

@@ -126,6 +126,9 @@
   <data name="Face_Group_AddGroup" xml:space="preserve">
     <value>Ajout du groupe en cours...</value>
   </data>
+  <data name="Face_Group_AddPerson" xml:space="preserve">
+    <value>Ajout de la personne en cours...</value>
+  </data>
   <data name="Face_Group_Add_Description.Header" xml:space="preserve">
     <value>Description du groupe :</value>
   </data>
@@ -138,6 +141,9 @@
   <data name="Face_Group_GetGroups" xml:space="preserve">
     <value>Récupération de la liste des groupes en cours...</value>
   </data>
+  <data name="Face_Group_GetPeople" xml:space="preserve">
+    <value>Récupération des personnes associées au groupe en cours...</value>
+  </data>
   <data name="Face_Group_Remove.Content" xml:space="preserve">
     <value>Supprimer le groupe</value>
   </data>
@@ -146,6 +152,24 @@
   </data>
   <data name="Face_People_NoSelection.Text" xml:space="preserve">
     <value>Selectionner un groupe dans la liste.</value>
+  </data>
+  <data name="Face_Person_Add.Text" xml:space="preserve">
+    <value>Ajouter une personne</value>
+  </data>
+  <data name="Face_Person_Add_Name.Header" xml:space="preserve">
+    <value>Nom de la personne :</value>
+  </data>
+  <data name="Face_Person_Add_Picture.Header" xml:space="preserve">
+    <value>Url de l'image de la personne :</value>
+  </data>
+  <data name="Face_Person_Face_Number.Text" xml:space="preserve">
+    <value>Nombre de faces :</value>
+  </data>
+  <data name="Face_Person_Remove.Text" xml:space="preserve">
+    <value>Supprimer la personne</value>
+  </data>
+  <data name="Refresh.Text" xml:space="preserve">
+    <value>Actualiser</value>
   </data>
   <data name="Settings_About.Text" xml:space="preserve">
     <value>A propos de cette application</value>

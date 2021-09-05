@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CognitiveServices.Explorer.Contracts.Services;
@@ -9,7 +8,8 @@ using CognitiveServices.Explorer.Core.Helpers;
 using CognitiveServices.Explorer.Core.Models;
 using CognitiveServices.Explorer.Core.Services;
 using CognitiveServices.Explorer.Helpers;
-using CognitiveServices.Explorer.Services;
+using CognitiveServices.Explorer.Models;
+using CognitiveServices.Explorer.Views.Dialogs;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
@@ -20,20 +20,23 @@ namespace CognitiveServices.Explorer.ViewModels
     {
         private bool isLoading;
 
-        private readonly IAddGroupDialogService addGroupDialogService;
+        private readonly IDialogService dialogService;
 
         private readonly IFaceClientService faceClientService;
 
         private FaceProcessorService faceProcessor;
 
         private IList<PersonGroupWithUserData> personGroups;
+        private IList<ExtendedPerson> people;
 
-        private PersonGroup selected;
+        private PersonGroupWithUserData selectedPersonGroup;
 
         private string groupDescription;
         private string groupName;
         private string loadingText;
         private string recognictionModelSelected;
+        private string personName;
+        private string personPicture;
 
         public bool IsLoading
         {
@@ -41,10 +44,13 @@ namespace CognitiveServices.Explorer.ViewModels
             set { SetProperty(ref isLoading, value); }
         }
 
-        public PersonGroup Selected
+        public PersonGroupWithUserData SelectedPersonGroup
         {
-            get { return selected; }
-            set { SetProperty(ref selected, value); }
+            get { return selectedPersonGroup; }
+            set
+            {
+                SetProperty(ref selectedPersonGroup, value);
+            }
         }
 
         public ICommand AddGroupCommand
@@ -61,6 +67,25 @@ namespace CognitiveServices.Explorer.ViewModels
             get { return new RelayCommand(AddGroupDialogCancel); }
         }
 
+        public ICommand AddPersonCommand
+        {
+            get { return new RelayCommand(AddPerson); }
+        }
+
+        public ICommand AddPersonDialogValidateCommand
+        {
+            get { return new RelayCommand(AddPersonDialogValidate); }
+        }
+
+        public ICommand AddPersonDialogCancelCommand
+        {
+            get { return new RelayCommand(AddPersonDialogCancel); }
+        }
+        public ICommand GetPeopleCommand
+        {
+            get { return new AsyncRelayCommand(GetPeople); }
+        }
+
         public ICommand RemoveGroupCommand
         {
             get { return new RelayCommand(RemoveGroup); }
@@ -70,6 +95,12 @@ namespace CognitiveServices.Explorer.ViewModels
         {
             get { return personGroups; }
             set { SetProperty(ref personGroups, value); }
+        }
+
+        public IList<ExtendedPerson> People
+        {
+            get { return people; }
+            set { SetProperty(ref people, value); }
         }
 
         public string GroupDescription
@@ -86,7 +117,7 @@ namespace CognitiveServices.Explorer.ViewModels
             {
                 SetProperty(ref groupName, value);
 
-                addGroupDialogService.SetPrimaryButtonState(!string.IsNullOrEmpty(groupName) && !string.IsNullOrEmpty(recognictionModelSelected));
+                dialogService.SetPrimaryButtonState(!string.IsNullOrEmpty(groupName) && !string.IsNullOrEmpty(recognictionModelSelected));
             }
         }
 
@@ -94,6 +125,28 @@ namespace CognitiveServices.Explorer.ViewModels
         {
             get { return loadingText; }
             set { SetProperty(ref loadingText, value); }
+        }
+
+        public string PersonName
+        {
+            get { return personName; }
+            set
+            {
+                SetProperty(ref personName, value);
+
+                dialogService.SetPrimaryButtonState(!string.IsNullOrEmpty(personName));
+            }
+        }
+        
+        public string PersonPicture
+        {
+            get { return personPicture; }
+            set
+            {
+                SetProperty(ref personPicture, value);
+
+                dialogService.SetPrimaryButtonState(!string.IsNullOrEmpty(personName));
+            }
         }
 
         public string RecognictionModelSelected
@@ -104,7 +157,7 @@ namespace CognitiveServices.Explorer.ViewModels
             {
                 SetProperty(ref recognictionModelSelected, value);
 
-                addGroupDialogService.SetPrimaryButtonState(!string.IsNullOrEmpty(groupName) && !string.IsNullOrEmpty(recognictionModelSelected));
+                dialogService.SetPrimaryButtonState(!string.IsNullOrEmpty(groupName) && !string.IsNullOrEmpty(recognictionModelSelected));
             }
         }
 
@@ -113,9 +166,9 @@ namespace CognitiveServices.Explorer.ViewModels
             get => new() { { "recognition_01", "Version 1" }, { "recognition_02", "Version 2" }, { "recognition_03", "Version 3" }, { "recognition_04", "Version 4" } };
         }
 
-        public FacePeopleViewModel(IAddGroupDialogService addGroupDialogService, IFaceClientService faceClientService)
+        public FacePeopleViewModel(IDialogService dialogService, IFaceClientService faceClientService)
         {
-            this.addGroupDialogService = addGroupDialogService;
+            this.dialogService = dialogService;
             this.faceClientService = faceClientService;
 
             faceProcessor = new FaceProcessorService(faceClientService.GetFaceClient());
@@ -132,7 +185,7 @@ namespace CognitiveServices.Explorer.ViewModels
 
         private async void AddGroup()
         {
-            await addGroupDialogService.ShowAsync();
+            await dialogService.ShowAsync(new AddGroupDialog());
         }
         
         private void AddGroupDialogCancel()
@@ -163,6 +216,39 @@ namespace CognitiveServices.Explorer.ViewModels
 
             await GetGroups();
         }
+        
+        private async void AddPerson()
+        {
+            await dialogService.ShowAsync(new AddPersonDialog(SelectedPersonGroup));
+        }
+        
+        private void AddPersonDialogCancel()
+        {
+            GroupName = "";
+            RecognictionModelSelected = "";
+        }
+
+        private async void AddPersonDialogValidate()
+        {
+            IsLoading = true;
+
+            LoadingText = "Face_Group_AddPerson".GetLocalized();
+
+            if (!string.IsNullOrEmpty(PersonPicture))
+            {
+                string userData = await Json.StringifyAsync(new UserData { PictureUrl = PersonPicture });
+
+                await faceProcessor.CreatePersonAsync(SelectedPersonGroup.PersonGroupId, PersonName, userData);
+            }
+            else
+                await faceProcessor.CreatePersonAsync(SelectedPersonGroup.PersonGroupId, PersonName);
+
+            PersonName = "";
+
+            IsLoading = false;
+
+            await GetPeople();
+        }
 
         private async Task GetGroups()
         {
@@ -175,11 +261,34 @@ namespace CognitiveServices.Explorer.ViewModels
             IsLoading = false;
         }
 
+        public async Task GetPeople()
+        {
+            IsLoading = true;
+
+            LoadingText = "Face_Group_GetPeople".GetLocalized();
+
+            IList<ExtendedPerson> extendedPeople = new List<ExtendedPerson>();
+
+            foreach (PersonWithUserData personWithUserData in await faceProcessor.GetPeopleAsync(SelectedPersonGroup.PersonGroupId))
+                extendedPeople.Add(new(personWithUserData));
+
+            People = extendedPeople;
+
+            IsLoading = false;
+        }
+
         private async void RemoveGroup()
         {
-            await faceProcessor.DeletePersonGroupAsync(Selected.PersonGroupId);
+            await faceProcessor.DeletePersonGroupAsync(SelectedPersonGroup.PersonGroupId);
 
             await GetGroups();
+        }
+        
+        public async void RemovePerson(ExtendedPerson extendedPerson)
+        {
+            await faceProcessor.DeletePersonAsync(SelectedPersonGroup.PersonGroupId, extendedPerson.PersonId);
+
+            await GetPeople();
         }
     }
 }

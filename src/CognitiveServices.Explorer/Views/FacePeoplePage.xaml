@@ -11,6 +11,7 @@
     xmlns:helpers="using:CognitiveServices.Explorer.Helpers"
     xmlns:media="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:models="using:CognitiveServices.Explorer.Core.Models"
+    xmlns:viewmodels="using:CognitiveServices.Explorer.ViewModels"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     Style="{StaticResource PageStyle}">
     <Page.Resources>
@@ -29,7 +30,7 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="DetailsTemplate">
+        <DataTemplate x:Key="DetailsTemplate" x:DataType="viewmodels:FacePeopleViewModel">
             <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                 <views:FacePeopleDetailControl PersonGroup="{Binding}" />
             </Grid>
@@ -66,17 +67,25 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <controls:ListDetailsView x:Uid="Face_People" x:Name="ListDetailsViewControl" BackButtonBehavior="Automatic" BorderBrush="Transparent" DetailsTemplate="{StaticResource DetailsTemplate}" ItemsSource="{x:Bind ViewModel.PersonGroups, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{StaticResource ItemTemplate}" NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}" SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}" ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+        <controls:ListDetailsView x:Uid="Face_People" x:Name="ListDetailsViewControl" BackButtonBehavior="Automatic" BorderBrush="Transparent" DetailsTemplate="{StaticResource DetailsTemplate}" ItemsSource="{x:Bind ViewModel.PersonGroups, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{StaticResource ItemTemplate}" NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}" SelectedItem="{x:Bind ViewModel.SelectedPersonGroup, Mode=TwoWay}" ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
             <controls:ListDetailsView.ListCommandBar>
                 <CommandBar OverflowButtonVisibility="Collapsed" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
                     <CommandBar.Content>
                         <StackPanel Orientation="Horizontal">
                             <Button x:Uid="Face_Group_Add" Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.AddGroupCommand}" />
-                            <Button x:Uid="Face_Group_Remove" Margin="{StaticResource XSmallLeftMargin}" IsEnabled="{x:Bind ViewModel.Selected, Converter={StaticResource ObjectToBooleanConverter}, Mode=OneWay}" Command="{x:Bind ViewModel.RemoveGroupCommand}" />
+                            <Button x:Uid="Face_Group_Remove" Margin="{StaticResource XSmallLeftMargin}" IsEnabled="{x:Bind ViewModel.SelectedPersonGroup, Converter={StaticResource ObjectToBooleanConverter}, Mode=OneWay}" Command="{x:Bind ViewModel.RemoveGroupCommand}" />
                         </StackPanel>
                     </CommandBar.Content>
                 </CommandBar>
             </controls:ListDetailsView.ListCommandBar>
+            <controls:ListDetailsView.DetailsCommandBar>
+                <CommandBar OverflowButtonVisibility="Collapsed" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <CommandBar.Content>
+                        <StackPanel Orientation="Horizontal">
+                        </StackPanel>
+                    </CommandBar.Content>
+                </CommandBar>
+            </controls:ListDetailsView.DetailsCommandBar>
         </controls:ListDetailsView>
         <controls:Loading x:Name="LoadingControl" IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
             <controls:Loading.Background>

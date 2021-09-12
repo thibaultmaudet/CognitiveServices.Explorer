@@ -81,6 +81,12 @@ namespace CognitiveServices.Explorer.ViewModels
         {
             get { return new RelayCommand(AddPersonDialogCancel); }
         }
+
+        public ICommand EditPersonDialogValidateCommand
+        {
+            get { return new RelayCommand<PersonWithUserData>(EditPersonDialogValidate); }
+        }
+
         public ICommand GetPeopleCommand
         {
             get { return new AsyncRelayCommand(GetPeople); }
@@ -244,6 +250,31 @@ namespace CognitiveServices.Explorer.ViewModels
                 await faceProcessor.CreatePersonAsync(SelectedPersonGroup.PersonGroupId, PersonName);
 
             PersonName = "";
+
+            IsLoading = false;
+
+            await GetPeople();
+        }
+
+        public async Task EditPerson(ExtendedPerson extendedPerson)
+        {
+            await dialogService.ShowAsync(new EditPersonDialog(SelectedPersonGroup, extendedPerson));
+        }
+
+        private async void EditPersonDialogValidate(PersonWithUserData personWithUserData)
+        {
+            IsLoading = true;
+
+            LoadingText = "Face_Person_UpdatePerson".GetLocalized();
+
+            if (!string.IsNullOrEmpty(personWithUserData.UserData.PictureUrl))
+            {
+                string userData = await Json.StringifyAsync(new UserData { PictureUrl = personWithUserData.UserData.PictureUrl });
+
+                await faceProcessor.UpdatePersonAsync(SelectedPersonGroup.PersonGroupId, personWithUserData.PersonId, personWithUserData.Name, userData);
+            }
+            else
+                await faceProcessor.UpdatePersonAsync(SelectedPersonGroup.PersonGroupId, personWithUserData.PersonId, personWithUserData.Name);
 
             IsLoading = false;
 

@@ -40,6 +40,11 @@ namespace CognitiveServices.Explorer.Views
             await control.ViewModel.GetPeople();
         }
 
+        private async void EditPerson_Click(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.EditPerson((sender as Button).CommandParameter as ExtendedPerson);
+        }
+
         private void RemovePerson_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.RemovePerson((sender as Button).CommandParameter as ExtendedPerson);

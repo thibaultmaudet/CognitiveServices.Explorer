@@ -168,6 +168,9 @@
   <data name="Face_Person_Remove.Text" xml:space="preserve">
     <value>Supprimer la personne</value>
   </data>
+  <data name="Face_Person_UpdatePerson" xml:space="preserve">
+    <value>Mise à jour de la personne en cours...</value>
+  </data>
   <data name="Refresh.Text" xml:space="preserve">
     <value>Actualiser</value>
   </data>

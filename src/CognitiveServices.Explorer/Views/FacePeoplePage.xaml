@@ -67,7 +67,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <controls:ListDetailsView x:Uid="Face_People" x:Name="ListDetailsViewControl" BackButtonBehavior="Automatic" BorderBrush="Transparent" DetailsTemplate="{StaticResource DetailsTemplate}" ItemsSource="{x:Bind ViewModel.PersonGroups, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{StaticResource ItemTemplate}" NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}" SelectedItem="{x:Bind ViewModel.SelectedPersonGroup, Mode=TwoWay}" ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+        <controls:ListDetailsView x:Uid="Face_People" x:Name="ListDetailsViewControl" BackButtonBehavior="Automatic" BorderBrush="Transparent" DetailsTemplate="{StaticResource DetailsTemplate}" ItemsSource="{x:Bind ViewModel.PersonGroups, Mode=TwoWay}" ItemTemplate="{StaticResource ItemTemplate}" NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}" SelectedItem="{x:Bind ViewModel.SelectedPersonGroup, Mode=TwoWay}" ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
             <controls:ListDetailsView.ListCommandBar>
                 <CommandBar OverflowButtonVisibility="Collapsed" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
                     <CommandBar.Content>

@@ -48,6 +48,16 @@ namespace CognitiveServices.Explorer.Core.Services
             await faceClient.PersonGroupPerson.DeleteAsync(groupId, personId);
         }
         
+        public async Task UpdatePersonAsync(string groupId, Guid personId, string personName)
+        {
+            await UpdatePersonAsync(groupId, personId, personName, "");
+        }
+
+        public async Task UpdatePersonAsync(string groupId, Guid personId, string personName, string userData)
+        {
+            await faceClient.PersonGroupPerson.UpdateAsync(groupId, personId, personName, userData);
+        }
+        
         public async Task<IList<PersonGroupWithUserData>> GetPersonGroupsAsync()
         {
             return await GetPersonGroupsAsync(SortOrder.Ascending);

@@ -27,6 +27,14 @@
                         </TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="8,20,0,8" Spacing="5">
+                        <Button Click="EditPerson_Click" CommandParameter="{Binding}">
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe70f;"/>
+                            <ToolTipService.ToolTip>
+                                <ToolTip Placement="Mouse">
+                                    <TextBlock x:Uid="Face_Person_Remove"/>
+                                </ToolTip>
+                            </ToolTipService.ToolTip>
+                        </Button>
                         <Button Click="RemovePerson_Click" CommandParameter="{Binding}">
                             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe74d;"/>
                             <ToolTipService.ToolTip>

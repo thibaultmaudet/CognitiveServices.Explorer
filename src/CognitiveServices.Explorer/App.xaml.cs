@@ -5,6 +5,7 @@ using CognitiveServices.Explorer.Services;
 using CognitiveServices.Explorer.ViewModels;
 using CognitiveServices.Explorer.Views;
 using CognitiveServices.Explorer.Views.Dialogs;
+
 using CommunityToolkit.Mvvm.DependencyInjection;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -70,6 +71,8 @@ namespace CognitiveServices.Explorer
             services.AddTransient<FacePeoplePage>();
             services.AddTransient<AddGroupDialog>();
             services.AddTransient<AddPersonDialog>();
+            services.AddTransient<PictureAnalyseViewModel>();
+            services.AddTransient<PictureAnalysePage>();
             return services.BuildServiceProvider();
         }
     }

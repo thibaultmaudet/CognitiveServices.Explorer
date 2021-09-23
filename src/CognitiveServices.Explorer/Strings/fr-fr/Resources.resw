@@ -171,6 +171,12 @@
   <data name="Face_Person_UpdatePerson" xml:space="preserve">
     <value>Mise à jour de la personne en cours...</value>
   </data>
+  <data name="PictureAnalyse_OpenImage.Label" xml:space="preserve">
+    <value>Ouvrir une image</value>
+  </data>
+  <data name="PictureAnalyse_Title.Text" xml:space="preserve">
+    <value>Analyse des images</value>
+  </data>
   <data name="Refresh.Text" xml:space="preserve">
     <value>Actualiser</value>
   </data>
@@ -215,5 +221,8 @@
   </data>
   <data name="Shell_FacePeople.Content" xml:space="preserve">
     <value>Gestion des personnes</value>
+  </data>
+  <data name="Shell_PictureAnalyse.Content" xml:space="preserve">
+    <value>Analyse des images</value>
   </data>
 </root>

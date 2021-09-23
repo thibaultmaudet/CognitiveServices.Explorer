@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="CognitiveServices.Explorer.Views.PictureAnalysePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:behaviors="using:CognitiveServices.Explorer.Behaviors"
+    xmlns:converters="using:CognitiveServices.Explorer.Helpers"
+    xmlns:dd="using:CognitiveServices.Explorer.Services.DragAndDrop"
+    mc:Ignorable="d"
+    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+    Style="{StaticResource PageStyle}">
+    <Page.Resources>
+        <converters:StorageFileToImageSourceConverter x:Key="StorageFileToImageSourceConverter"/>
+    </Page.Resources>
+    <Grid x:Name="ContentArea">
+        <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" AllowDrop="True">
+            <dd:DragDropService.Configuration>
+                <dd:DropConfiguration DropStorageItemsCommand="{x:Bind ViewModel.GetStorageItemsCommand}" />
+            </dd:DragDropService.Configuration>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <CommandBar DefaultLabelPosition="Right">
+                <CommandBar.Content>
+                    <TextBlock x:Uid="PictureAnalyse_Title" Margin="12,8" />
+                </CommandBar.Content>
+                <AppBarButton x:Uid="PictureAnalyse_OpenImage" Icon="OpenLocal" Command="{x:Bind ViewModel.OpenLocalImageCommand}" />
+            </CommandBar>
+            <Image Source="{x:Bind ViewModel.OpenedImage, Converter={StaticResource StorageFileToImageSourceConverter}, Mode=OneWay}" Grid.Row="1" />
+        </Grid>
+    </Grid>
+</Page>

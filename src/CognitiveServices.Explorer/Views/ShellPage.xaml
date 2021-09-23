@@ -20,6 +20,11 @@
         Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
         Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
         <NavigationView.MenuItems>
+            <NavigationViewItem x:Uid="Shell_PictureAnalyse" helpers:NavHelper.NavigateTo="CognitiveServices.Explorer.ViewModels.PictureAnalyseViewModel">
+                <NavigationViewItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8B9;"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
             <NavigationViewItem x:Uid="Shell_FacePeople" helpers:NavHelper.NavigateTo="CognitiveServices.Explorer.ViewModels.FacePeopleViewModel" Icon="People" />
         </NavigationView.MenuItems>
         <NavigationView.HeaderTemplate>

@@ -21,6 +21,7 @@ namespace CognitiveServices.Explorer.Services
             Configure<MainViewModel, MainPage>();
             Configure<SettingsViewModel, SettingsPage>();
             Configure<FacePeopleViewModel, FacePeoplePage>();
+            Configure<PictureAnalyseViewModel, PictureAnalysePage>();
         }
 
         public Type GetPageType(string key)

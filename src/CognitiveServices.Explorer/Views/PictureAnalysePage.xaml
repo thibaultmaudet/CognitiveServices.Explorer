@@ -7,28 +7,37 @@
     xmlns:behaviors="using:CognitiveServices.Explorer.Behaviors"
     xmlns:converters="using:CognitiveServices.Explorer.Helpers"
     xmlns:dd="using:CognitiveServices.Explorer.Services.DragAndDrop"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     Style="{StaticResource PageStyle}">
     <Page.Resources>
         <converters:StorageFileToImageSourceConverter x:Key="StorageFileToImageSourceConverter"/>
+        <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
     </Page.Resources>
-    <Grid x:Name="ContentArea">
-        <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" AllowDrop="True">
-            <dd:DragDropService.Configuration>
-                <dd:DropConfiguration DropStorageItemsCommand="{x:Bind ViewModel.GetStorageItemsCommand}" />
-            </dd:DragDropService.Configuration>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <CommandBar DefaultLabelPosition="Right">
-                <CommandBar.Content>
-                    <TextBlock x:Uid="PictureAnalyse_Title" Margin="12,8" />
-                </CommandBar.Content>
-                <AppBarButton x:Uid="PictureAnalyse_OpenImage" Icon="OpenLocal" Command="{x:Bind ViewModel.OpenLocalImageCommand}" />
-            </CommandBar>
-            <Image Source="{x:Bind ViewModel.OpenedImage, Converter={StaticResource StorageFileToImageSourceConverter}, Mode=OneWay}" Grid.Row="1" />
-        </Grid>
+    <Grid x:Name="ContentArea" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" AllowDrop="True">
+        <Grid.Resources>
+            <muxc:CommandBarFlyout x:Name="FlyoutMenu">
+                <muxc:CommandBarFlyout.PrimaryCommands>
+                    <AppBarButton Icon="OpenFile" Command="{x:Bind ViewModel.OpenLocalImageCommand}">
+                        <ToolTipService.ToolTip>
+                            <ToolTip x:Uid="OpenImage" />
+                        </ToolTipService.ToolTip>
+                    </AppBarButton>
+                </muxc:CommandBarFlyout.PrimaryCommands>
+            </muxc:CommandBarFlyout>
+        </Grid.Resources>
+        <dd:DragDropService.Configuration>
+            <dd:DropConfiguration DropStorageItemsCommand="{x:Bind ViewModel.GetStorageItemsCommand}" />
+        </dd:DragDropService.Configuration>
+        <Image x:Name="PictureImage" Source="{x:Bind ViewModel.OpenedImage, Converter={StaticResource StorageFileToImageSourceConverter}, Mode=OneWay}" Tapped="PictureImage_Tapped" />
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="15" Visibility="{x:Bind ViewModel.OpenedImage, Converter={StaticResource ObjectToVisibilityConverter}, Mode=OneWay}">
+            <TextBlock TextAlignment="Center" Style="{StaticResource SubtitleTextBlockStyle}">
+                <Run x:Uid="PictureAnalyse_NoImage" />
+                <LineBreak />
+                <Run x:Uid="PictureAnalyse_OpenIndication" />
+            </TextBlock>
+            <Button x:Uid="OpenImage" HorizontalAlignment="Center" Command="{x:Bind ViewModel.OpenLocalImageCommand}" />
+        </StackPanel>
     </Grid>
 </Page>

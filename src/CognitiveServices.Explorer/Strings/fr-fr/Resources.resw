@@ -171,11 +171,14 @@
   <data name="Face_Person_UpdatePerson" xml:space="preserve">
     <value>Mise à jour de la personne en cours...</value>
   </data>
-  <data name="PictureAnalyse_OpenImage.Label" xml:space="preserve">
+  <data name="OpenImage.Content" xml:space="preserve">
     <value>Ouvrir une image</value>
   </data>
-  <data name="PictureAnalyse_Title.Text" xml:space="preserve">
-    <value>Analyse des images</value>
+  <data name="PictureAnalyse_NoImage.Text" xml:space="preserve">
+    <value>Aucune image n'est ouverte.</value>
+  </data>
+  <data name="PictureAnalyse_OpenIndication.Text" xml:space="preserve">
+    <value>Veuillez ouvrir une image avec le bouton ci-dessous ou en glisser-déposer une.</value>
   </data>
   <data name="Refresh.Text" xml:space="preserve">
     <value>Actualiser</value>

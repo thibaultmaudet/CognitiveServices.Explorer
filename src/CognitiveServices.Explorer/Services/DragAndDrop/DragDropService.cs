@@ -47,21 +47,21 @@ namespace CognitiveServices.Explorer.Services.DragAndDrop
                 args.AcceptedOperation = DataPackageOperation.Copy;
 
                 DragDropData data = new() { AcceptedOperation = args.AcceptedOperation, DataView = args.DataView };
-                configuration.DragEnterCommand?.Execute(data);
+                configuration.DragEnterAction?.Invoke(data);
                 args.AcceptedOperation = data.AcceptedOperation;
             };
 
             element.DragOver += (sender, args) =>
             {
                 DragDropData data = new() { AcceptedOperation = args.AcceptedOperation, DataView = args.DataView };
-                configuration.DragOverCommand?.Execute(data);
+                configuration.DragOverAction?.Invoke(data);
                 args.AcceptedOperation = data.AcceptedOperation;
             };
 
             element.DragLeave += (sender, args) =>
             {
                 DragDropData data = new() { AcceptedOperation = args.AcceptedOperation, DataView = args.DataView };
-                configuration.DragLeaveCommand?.Execute(data);
+                configuration.DragLeaveAction?.Invoke(data);
             };
 
             element.Drop += async (sender, args) =>

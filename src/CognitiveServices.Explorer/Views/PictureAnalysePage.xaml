@@ -8,6 +8,7 @@
     xmlns:converters="using:CognitiveServices.Explorer.Helpers"
     xmlns:dd="using:CognitiveServices.Explorer.Services.DragAndDrop"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     Style="{StaticResource PageStyle}">
@@ -19,7 +20,7 @@
         <Grid.Resources>
             <muxc:CommandBarFlyout x:Name="FlyoutMenu">
                 <muxc:CommandBarFlyout.PrimaryCommands>
-                    <AppBarButton Icon="OpenFile" Command="{x:Bind ViewModel.OpenLocalImageCommand}">
+                    <AppBarButton Icon="OpenFile" Click="OpenImage_Click">
                         <ToolTipService.ToolTip>
                             <ToolTip x:Uid="OpenImage" />
                         </ToolTipService.ToolTip>
@@ -28,16 +29,24 @@
             </muxc:CommandBarFlyout>
         </Grid.Resources>
         <dd:DragDropService.Configuration>
-            <dd:DropConfiguration DropStorageItemsCommand="{x:Bind ViewModel.GetStorageItemsCommand}" />
+            <dd:DropConfiguration DropStorageItemsAction="{x:Bind GetStorageItem}"  />
         </dd:DragDropService.Configuration>
-        <Image x:Name="PictureImage" Source="{x:Bind ViewModel.OpenedImage, Converter={StaticResource StorageFileToImageSourceConverter}, Mode=OneWay}" Tapped="PictureImage_Tapped" />
+        <Grid>
+            <canvas:CanvasVirtualControl x:Name="ImageCanvas" RegionsInvalidated="ImageVirtualControl_RegionsInvalidated" CreateResources="ImageCanvas_CreateResources" Tapped="ImageCanvas_Tapped">
+                <canvas:CanvasVirtualControl.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Lancer la détection faciale" Click="StartFaceDetection_Click" />
+                    </MenuFlyout>
+                </canvas:CanvasVirtualControl.ContextFlyout>
+            </canvas:CanvasVirtualControl>
+        </Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="15" Visibility="{x:Bind ViewModel.OpenedImage, Converter={StaticResource ObjectToVisibilityConverter}, Mode=OneWay}">
             <TextBlock TextAlignment="Center" Style="{StaticResource SubtitleTextBlockStyle}">
                 <Run x:Uid="PictureAnalyse_NoImage" />
                 <LineBreak />
                 <Run x:Uid="PictureAnalyse_OpenIndication" />
             </TextBlock>
-            <Button x:Uid="OpenImage" HorizontalAlignment="Center" Command="{x:Bind ViewModel.OpenLocalImageCommand}" />
+            <Button x:Uid="OpenImage" HorizontalAlignment="Center"  Click="OpenImage_Click" />
         </StackPanel>
     </Grid>
 </Page>

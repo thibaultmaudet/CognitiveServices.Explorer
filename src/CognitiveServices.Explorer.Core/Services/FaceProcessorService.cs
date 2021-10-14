@@ -4,6 +4,7 @@ using Microsoft.Azure.CognitiveServices.Vision.Face;
 using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -96,6 +97,11 @@ namespace CognitiveServices.Explorer.Core.Services
                 return peopleWithUserData.OrderByDescending(x => x.Name).ToList();
 
             return peopleWithUserData;
+        }
+
+        public async Task<IList<DetectedFace>> DetectFacesAsync(Stream stream, bool returnFaceLandmarks, IList<FaceAttributeType> returnFaceAttributes)
+        {
+            return await faceClient.Face.DetectWithStreamAsync(stream, returnFaceLandmarks: returnFaceLandmarks, returnFaceAttributes: returnFaceAttributes);
         }
     }
 }

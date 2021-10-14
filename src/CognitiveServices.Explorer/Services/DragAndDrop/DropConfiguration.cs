@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using CognitiveServices.Explorer.Models;
+using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,55 +11,48 @@ namespace CognitiveServices.Explorer.Services.DragAndDrop
 {
     public class DropConfiguration : DependencyObject
     {
-        public static readonly DependencyProperty DropStorageItemsCommandProperty = DependencyProperty.Register("DropStorageItemsCommand", typeof(ICommand), typeof(DropConfiguration), new PropertyMetadata(null));
+        public static readonly DependencyProperty DropStorageItemsActionProperty =
+            DependencyProperty.Register("DropStorageItemsAction", typeof(Action<IReadOnlyList<IStorageItem>>), typeof(DropConfiguration), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty DropDataViewCommandProperty = DependencyProperty.Register("DropDataViewCommand", typeof(ICommand), typeof(DropConfiguration), new PropertyMetadata(null));
+        public static readonly DependencyProperty DragEnterActionProperty =
+            DependencyProperty.Register("DragEnterAction", typeof(Action<DragDropData>), typeof(DropConfiguration), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty DragEnterCommandProperty = DependencyProperty.Register("DragEnterCommand", typeof(ICommand), typeof(DropConfiguration), new PropertyMetadata(null));
+        public static readonly DependencyProperty DragOverActionProperty =
+            DependencyProperty.Register("DragOverAction", typeof(Action<DragDropData>), typeof(DropConfiguration), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty DragOverCommandProperty = DependencyProperty.Register("DragOverCommand", typeof(ICommand), typeof(DropConfiguration), new PropertyMetadata(null));
+        public static readonly DependencyProperty DragLeaveActionProperty =
+            DependencyProperty.Register("DragLeaveAction", typeof(Action<DragDropData>), typeof(DropConfiguration), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty DragLeaveCommandProperty = DependencyProperty.Register("DragLeaveCommand", typeof(ICommand), typeof(DropConfiguration), new PropertyMetadata(null));
-
-        public ICommand DropStorageItemsCommand
+        public Action<IReadOnlyList<IStorageItem>> DropStorageItemsAction
         {
-            get { return (ICommand)GetValue(DropStorageItemsCommandProperty); }
-            set { SetValue(DropStorageItemsCommandProperty, value); }
+            get { return (Action<IReadOnlyList<IStorageItem>>)GetValue(DropStorageItemsActionProperty); }
+            set { SetValue(DropStorageItemsActionProperty, value); }
         }
 
-        public ICommand DropDataViewCommand
+        public Action<DragDropData> DragEnterAction
         {
-            get { return (ICommand)GetValue(DropDataViewCommandProperty); }
-            set { SetValue(DropDataViewCommandProperty, value); }
+            get { return (Action<DragDropData>)GetValue(DragEnterActionProperty); }
+            set { SetValue(DragEnterActionProperty, value); }
         }
 
-        public ICommand DragEnterCommand
+        public Action<DragDropData> DragOverAction
         {
-            get { return (ICommand)GetValue(DragEnterCommandProperty); }
-            set { SetValue(DragEnterCommandProperty, value); }
+            get { return (Action<DragDropData>)GetValue(DragOverActionProperty); }
+            set { SetValue(DragOverActionProperty, value); }
         }
 
-        public ICommand DragOverCommand
+        public Action<DragDropData> DragLeaveAction
         {
-            get { return (ICommand)GetValue(DragOverCommandProperty); }
-            set { SetValue(DragOverCommandProperty, value); }
-        }
-
-        public ICommand DragLeaveCommand
-        {
-            get { return (ICommand)GetValue(DragLeaveCommandProperty); }
-            set { SetValue(DragLeaveCommandProperty, value); }
+            get { return (Action<DragDropData>)GetValue(DragLeaveActionProperty); }
+            set { SetValue(DragLeaveActionProperty, value); }
         }
 
         public async Task ProcessComandsAsync(DataPackageView dataview)
         {
-            if (DropDataViewCommand != null)
-                DropDataViewCommand.Execute(dataview);
-
-            if (dataview.Contains(StandardDataFormats.StorageItems) && DropStorageItemsCommand != null)
+            if (dataview.Contains(StandardDataFormats.StorageItems) && DropStorageItemsAction != null)
             {
                 IReadOnlyList<IStorageItem> storageItems = await dataview.GetStorageItemsAsync();
-                DropStorageItemsCommand.Execute(storageItems);
+                DropStorageItemsAction.Invoke(storageItems);
             }
         }
     }

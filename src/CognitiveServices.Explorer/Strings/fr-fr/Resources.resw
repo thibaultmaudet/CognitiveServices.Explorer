@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddFace_Person.Header" xml:space="preserve">
+    <value>Sélectionnez la personne associée au visage :</value>
+  </data>
   <data name="AppDisplayName" xml:space="preserve">
     <value>CognitiveServices.Explorer</value>
   </data>
@@ -174,11 +177,17 @@
   <data name="OpenImage.Content" xml:space="preserve">
     <value>Ouvrir une image</value>
   </data>
+  <data name="PictureAnalyse_AddPersonFace.Text" xml:space="preserve">
+    <value>Ajouter un visage</value>
+  </data>
   <data name="PictureAnalyse_NoImage.Text" xml:space="preserve">
     <value>Aucune image n'est ouverte.</value>
   </data>
   <data name="PictureAnalyse_OpenIndication.Text" xml:space="preserve">
     <value>Veuillez ouvrir une image avec le bouton ci-dessous ou en glisser-déposer une.</value>
+  </data>
+  <data name="PictureAnalyse_StartFaceDetection.Text" xml:space="preserve">
+    <value>Lancer la détection faciale</value>
   </data>
   <data name="Refresh.Text" xml:space="preserve">
     <value>Actualiser</value>

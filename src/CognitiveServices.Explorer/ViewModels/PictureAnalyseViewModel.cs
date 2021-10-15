@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CognitiveServices.Explorer.Contracts.Services;
 using CognitiveServices.Explorer.Core.Services;
+using CognitiveServices.Explorer.Views.Dialogs;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
@@ -15,6 +16,8 @@ namespace CognitiveServices.Explorer.ViewModels
 {
     public class PictureAnalyseViewModel : ObservableRecipient
     {
+        private IDialogService dialogService;
+
         private readonly IFaceClientService faceClientService;
 
         private IList<DetectedFace> detectedFaces;
@@ -35,16 +38,25 @@ namespace CognitiveServices.Explorer.ViewModels
             set { SetProperty(ref openedFile, value); }
         }
         
-        public ICommand StartFaceDetectionCommand
+        public ICommand AddFaceCommand
         {
-            get { return new AsyncRelayCommand(StartFaceDetection); }
+            get { return new RelayCommand(AddFaceAsync); }
         }
 
-        public PictureAnalyseViewModel(IFaceClientService faceClientService)
+        public PictureAnalyseViewModel(IDialogService dialogService, IFaceClientService faceClientService)
         {
+            this.dialogService = dialogService;
+
             this.faceClientService = faceClientService;
 
             faceProcessor = new FaceProcessorService(faceClientService.FaceClient);
+        }
+
+        public async void AddFaceAsync()
+        {
+            IRandomAccessStreamWithContentType randomAccessStream = await OpenedImage.OpenReadAsync();
+
+            await dialogService.ShowAsync(new AddFaceDialog(randomAccessStream.AsStreamForRead()));
         }
 
         public async Task StartFaceDetection()

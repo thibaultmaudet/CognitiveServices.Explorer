@@ -103,5 +103,10 @@ namespace CognitiveServices.Explorer.Core.Services
         {
             return await faceClient.Face.DetectWithStreamAsync(stream, returnFaceLandmarks: returnFaceLandmarks, returnFaceAttributes: returnFaceAttributes);
         }
+
+        public async Task AddFace(string groupId, Guid personId, Stream imagePath)
+        {
+            await faceClient.PersonGroupPerson.AddFaceFromStreamAsync(groupId, personId, imagePath);
+        }
     }
 }

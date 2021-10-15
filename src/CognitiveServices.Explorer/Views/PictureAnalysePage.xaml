@@ -35,7 +35,9 @@
             <canvas:CanvasVirtualControl x:Name="ImageCanvas" RegionsInvalidated="ImageVirtualControl_RegionsInvalidated" CreateResources="ImageCanvas_CreateResources" Tapped="ImageCanvas_Tapped">
                 <canvas:CanvasVirtualControl.ContextFlyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="Lancer la détection faciale" Click="StartFaceDetection_Click" />
+                        <MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceDetection" Click="StartFaceDetection_Click" />
+                        <MenuFlyoutSeparator Visibility="{x:Bind ViewModel.DetectedFaces, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}"/>
+                        <MenuFlyoutItem x:Uid="PictureAnalyse_AddPersonFace" Visibility="{x:Bind ViewModel.DetectedFaces, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}" Command="{x:Bind ViewModel.AddFaceCommand}"/>
                     </MenuFlyout>
                 </canvas:CanvasVirtualControl.ContextFlyout>
             </canvas:CanvasVirtualControl>

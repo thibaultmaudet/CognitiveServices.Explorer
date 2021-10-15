@@ -3,6 +3,7 @@ using CognitiveServices.Explorer.Contracts.Services;
 using CognitiveServices.Explorer.Helpers;
 using CognitiveServices.Explorer.Services;
 using CognitiveServices.Explorer.ViewModels;
+using CognitiveServices.Explorer.ViewModels.Dialogs;
 using CognitiveServices.Explorer.Views;
 using CognitiveServices.Explorer.Views.Dialogs;
 
@@ -62,6 +63,7 @@ namespace CognitiveServices.Explorer
 
             // Views and ViewModels
             services.AddTransient<ShellPage>();
+            services.AddTransient<AddFaceViewModel>();
             services.AddTransient<ShellViewModel>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
@@ -69,6 +71,7 @@ namespace CognitiveServices.Explorer
             services.AddTransient<SettingsPage>();
             services.AddTransient<FacePeopleViewModel>();
             services.AddTransient<FacePeoplePage>();
+            services.AddTransient<AddFaceDialog>();
             services.AddTransient<AddGroupDialog>();
             services.AddTransient<AddPersonDialog>();
             services.AddTransient<PictureAnalyseViewModel>();

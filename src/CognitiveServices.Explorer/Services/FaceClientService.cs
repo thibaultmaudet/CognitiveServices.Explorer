@@ -20,22 +20,25 @@ namespace CognitiveServices.Explorer.Services
             settingsViewModel = new(themeSelectorService);
         }
 
-        public IFaceClient GetFaceClient()
+        public IFaceClient FaceClient
         {
-            if (faceClient == null)
-                faceClient = new FaceClient(new ApiKeyServiceClientCredentials(GetFaceKey())) { Endpoint = GetFaceEndpoint() };
+            get 
+            {
+                if (faceClient == null)
+                    faceClient = new FaceClient(new ApiKeyServiceClientCredentials(FaceKey)) { Endpoint = FaceEndpoint };
 
-            return faceClient;
+                return faceClient;
+            }
         }
 
-        public string GetFaceEndpoint()
+        public string FaceEndpoint
         {
-            return settingsViewModel.FaceEndpoint;
+            get { return settingsViewModel.FaceEndpoint; }
         }
 
-        public string GetFaceKey()
+        public string FaceKey
         {
-            return settingsViewModel.FaceKey;
+            get { return settingsViewModel.FaceKey; }
         }
     }
 }

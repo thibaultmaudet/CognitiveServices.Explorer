@@ -177,7 +177,7 @@ namespace CognitiveServices.Explorer.ViewModels
             this.dialogService = dialogService;
             this.faceClientService = faceClientService;
 
-            faceProcessor = new FaceProcessorService(faceClientService.GetFaceClient());
+            faceProcessor = new FaceProcessorService(faceClientService.FaceClient);
         }
 
         public async void OnNavigatedTo(object parameter)

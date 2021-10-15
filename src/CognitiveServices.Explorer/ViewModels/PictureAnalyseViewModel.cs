@@ -44,7 +44,7 @@ namespace CognitiveServices.Explorer.ViewModels
         {
             this.faceClientService = faceClientService;
 
-            faceProcessor = new FaceProcessorService(faceClientService.GetFaceClient());
+            faceProcessor = new FaceProcessorService(faceClientService.FaceClient);
         }
 
         public async Task StartFaceDetection()

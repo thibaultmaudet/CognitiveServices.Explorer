@@ -9,9 +9,9 @@ namespace CognitiveServices.Explorer.Contracts.Services
 {
     public interface IFaceClientService
     {
-        IFaceClient GetFaceClient();
+        public IFaceClient FaceClient { get; }
 
-        string GetFaceEndpoint();
-        string GetFaceKey();
+        public string FaceEndpoint { get; }
+        public string FaceKey { get; }
     }
 }

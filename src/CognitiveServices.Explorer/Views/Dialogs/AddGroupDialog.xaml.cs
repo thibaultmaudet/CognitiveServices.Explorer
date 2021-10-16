@@ -1,4 +1,4 @@
-﻿using CognitiveServices.Explorer.ViewModels;
+﻿using CognitiveServices.Explorer.ViewModels.Dialogs;
 
 using CommunityToolkit.Mvvm.DependencyInjection;
 
@@ -8,11 +8,11 @@ namespace CognitiveServices.Explorer.Views.Dialogs
 {
     public sealed partial class AddGroupDialog : ContentDialog
     {
-        public FacePeopleViewModel ViewModel { get; }
+        public AddGroupViewModel ViewModel { get; }
 
         public AddGroupDialog()
         {
-            ViewModel = Ioc.Default.GetService<FacePeopleViewModel>();
+            ViewModel = Ioc.Default.GetService<AddGroupViewModel>();
             InitializeComponent();
         }
     }

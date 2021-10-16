@@ -120,8 +120,14 @@
   <data name="AddFace_Person.Header" xml:space="preserve">
     <value>Sélectionnez la personne associée au visage :</value>
   </data>
+  <data name="AddPerson" xml:space="preserve">
+    <value>Ajouter une personne</value>
+  </data>
   <data name="AppDisplayName" xml:space="preserve">
     <value>CognitiveServices.Explorer</value>
+  </data>
+  <data name="EditPerson" xml:space="preserve">
+    <value>Modifier une personne</value>
   </data>
   <data name="Face_Group_Add.Content" xml:space="preserve">
     <value>Ajouter un groupe</value>

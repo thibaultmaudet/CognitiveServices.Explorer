@@ -15,28 +15,25 @@ namespace CognitiveServices.Explorer.Core.Models
             get
             {
                 if (userData == null)
-                    userData = new();
-
-                if (!string.IsNullOrEmpty(base.UserData))
                 {
-                    Task task = Task.Run(async () =>
+                    if (!string.IsNullOrEmpty(base.UserData))
                     {
-                        userData = await Json.ToObjectAsync<UserData>(base.UserData);
-                    });
+                        Task task = Task.Run(async () =>
+                        {
+                            userData = await Json.ToObjectAsync<UserData>(base.UserData);
+                        });
 
-                    task.Wait();
+                        task.Wait();
+                    }
+                    else
+                        userData = new();
                 }
 
                 return userData;
             }
             set
             {
-                Task.Run(async () =>
-                {
-                    base.UserData = await Json.StringifyAsync(value);
-
-                    SetProperty(ref userData, value);
-                });
+                SetProperty(ref userData, value);
             }
         }
 

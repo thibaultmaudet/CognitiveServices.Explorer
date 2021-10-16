@@ -6,12 +6,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-    CornerRadius="4" DefaultButton="Primary" Title="Ajouter un groupe de personne" BorderThickness="0" PrimaryButtonText="Valider" IsPrimaryButtonEnabled="False" SecondaryButtonText="Annuler" PrimaryButtonCommand="{x:Bind ViewModel.AddGroupDialogValidateCommand}" SecondaryButtonCommand="{x:Bind ViewModel.AddGroupDialogCancelCommand}">
+    CornerRadius="4" DefaultButton="Primary" Title="Ajouter un groupe de personne" BorderThickness="0" PrimaryButtonText="Valider" IsPrimaryButtonEnabled="{x:Bind ViewModel.EnablePrimaryButton, Mode=OneWay}" SecondaryButtonText="Annuler" PrimaryButtonCommand="{x:Bind ViewModel.ValidateCommand}">
     <Grid MinWidth="300">
         <StackPanel Orientation="Vertical" Spacing="4">
             <TextBox x:Uid="Face_Group_Add_Name" Height="55" Width="355" Text="{x:Bind ViewModel.GroupName, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />
             <TextBox x:Uid="Face_Group_Add_Description" Height="55" Width="355" Text="{x:Bind ViewModel.GroupDescription, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
-            <ComboBox x:Uid="Face_Group_Add_RecognitionModel" ItemsSource="{x:Bind ViewModel.RecognitionModels}" DisplayMemberPath="Value" SelectedValuePath="Key" Height="55" Width="355" SelectedValue="{x:Bind ViewModel.RecognictionModelSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ComboBox x:Uid="Face_Group_Add_RecognitionModel" ItemsSource="{x:Bind ViewModel.RecognitionModels, Mode=OneWay}" DisplayMemberPath="Value" SelectedValuePath="Key" Height="55" Width="355" SelectedValue="{x:Bind ViewModel.RecognictionModelSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
     </Grid>
 </ContentDialog>

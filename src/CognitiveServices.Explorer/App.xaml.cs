@@ -63,7 +63,6 @@ namespace CognitiveServices.Explorer
 
             // Views and ViewModels
             services.AddTransient<ShellPage>();
-            services.AddTransient<AddFaceViewModel>();
             services.AddTransient<ShellViewModel>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
@@ -71,9 +70,12 @@ namespace CognitiveServices.Explorer
             services.AddTransient<SettingsPage>();
             services.AddTransient<FacePeopleViewModel>();
             services.AddTransient<FacePeoplePage>();
+            services.AddTransient<AddFaceViewModel>();
             services.AddTransient<AddFaceDialog>();
+            services.AddTransient<AddGroupViewModel>();
             services.AddTransient<AddGroupDialog>();
-            services.AddTransient<AddPersonDialog>();
+            services.AddTransient<AddEditPersonViewModel>();
+            services.AddTransient<AddEditPersonDialog>();
             services.AddTransient<PictureAnalyseViewModel>();
             services.AddTransient<PictureAnalysePage>();
             return services.BuildServiceProvider();

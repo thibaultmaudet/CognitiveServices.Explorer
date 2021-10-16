@@ -153,6 +153,9 @@
   <data name="Face_Group_GetPeople" xml:space="preserve">
     <value>Récupération des personnes associées au groupe en cours...</value>
   </data>
+  <data name="Face_Group_NewGroup.Text" xml:space="preserve">
+    <value>Ajouter une personne (Ctrl+Shift+N)</value>
+  </data>
   <data name="Face_Group_Remove.Content" xml:space="preserve">
     <value>Supprimer le groupe</value>
   </data>
@@ -163,7 +166,7 @@
     <value>Selectionner un groupe dans la liste.</value>
   </data>
   <data name="Face_Person_Add.Text" xml:space="preserve">
-    <value>Ajouter une personne</value>
+    <value>Ajouter une personne (Ctrl+N)</value>
   </data>
   <data name="Face_Person_Add_Name.Header" xml:space="preserve">
     <value>Nom de la personne :</value>

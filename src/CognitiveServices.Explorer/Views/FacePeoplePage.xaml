@@ -72,7 +72,16 @@
                 <CommandBar OverflowButtonVisibility="Collapsed" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
                     <CommandBar.Content>
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Uid="Face_Group_Add" Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.AddGroupCommand}" />
+                            <Button x:Uid="Face_Group_Add" Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.AddGroupCommand}">
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Placement="Mouse">
+                                        <TextBlock x:Uid="Face_Group_NewGroup"/>
+                                    </ToolTip>
+                                </ToolTipService.ToolTip>
+                                <Button.KeyboardAccelerators>
+                                    <KeyboardAccelerator Modifiers="Control,Shift" Key="N" />
+                                </Button.KeyboardAccelerators>
+                            </Button>
                             <Button x:Uid="Face_Group_Remove" Margin="{StaticResource XSmallLeftMargin}" IsEnabled="{x:Bind ViewModel.SelectedPersonGroup, Converter={StaticResource ObjectToBooleanConverter}, Mode=OneWay}" Command="{x:Bind ViewModel.RemoveGroupCommand}" />
                         </StackPanel>
                     </CommandBar.Content>

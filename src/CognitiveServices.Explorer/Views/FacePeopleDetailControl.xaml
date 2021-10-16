@@ -60,6 +60,9 @@
                                 <TextBlock x:Uid="Face_Person_Add"/>
                             </ToolTip>
                         </ToolTipService.ToolTip>
+                        <Button.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="N" />
+                        </Button.KeyboardAccelerators>
                     </Button>
                     <Button Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.GetPeopleCommand}" HorizontalAlignment="Right">
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe72c;" />

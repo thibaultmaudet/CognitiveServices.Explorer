@@ -75,6 +75,17 @@
                         <KeyboardAccelerator Modifiers="Control" Key="N" />
                     </Button.KeyboardAccelerators>
                 </Button>
+                <Button Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.TrainGroupCommand}">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7be;" />
+                    <ToolTipService.ToolTip>
+                        <ToolTip Placement="Mouse">
+                            <TextBlock x:Uid="Face_People_Training"/>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="N" />
+                    </Button.KeyboardAccelerators>
+                </Button>
                 <Button Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.GetPeopleCommand}" HorizontalAlignment="Right">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe72c;" />
                     <ToolTipService.ToolTip>

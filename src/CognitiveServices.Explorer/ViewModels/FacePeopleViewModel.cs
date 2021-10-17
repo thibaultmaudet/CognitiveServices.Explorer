@@ -66,6 +66,11 @@ namespace CognitiveServices.Explorer.ViewModels
             get { return new RelayCommand(RemoveGroup); }
         }
 
+        public ICommand TrainGroupCommand
+        {
+            get { return new RelayCommand(TrainGroup); }
+        }
+
         public IList<PersonGroupWithUserData> PersonGroups
         {
             get { return personGroups; }
@@ -132,6 +137,17 @@ namespace CognitiveServices.Explorer.ViewModels
 
             IsLoading = false;
         }
+        
+        public async void TrainGroup()
+        {
+            IsLoading = true;
+
+            LoadingText = "Face_People_TrainingOnGoing".GetLocalized();
+
+            await faceProcessor.TrainingGroupAsync(SelectedPersonGroup.PersonGroupId);
+
+            IsLoading = false;
+        }
 
         public async Task GetPeople()
         {
@@ -162,5 +178,7 @@ namespace CognitiveServices.Explorer.ViewModels
 
             await GetPeople();
         }
+
+
     }
 }

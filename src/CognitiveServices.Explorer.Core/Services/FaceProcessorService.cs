@@ -108,5 +108,10 @@ namespace CognitiveServices.Explorer.Core.Services
         {
             await faceClient.PersonGroupPerson.AddFaceFromStreamAsync(groupId, personId, imagePath);
         }
+
+        public async Task TrainingGroupAsync(string groupId)
+        {
+            await faceClient.PersonGroup.TrainAsync(groupId);
+        }
     }
 }

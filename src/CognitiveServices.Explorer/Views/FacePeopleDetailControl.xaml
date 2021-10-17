@@ -5,6 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:CognitiveServices.Explorer.Models"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:media="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d">
     <UserControl.Resources>
         <DataTemplate x:Key="ImageTextTemplate" x:DataType="models:ExtendedPerson">
@@ -48,33 +50,49 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
-    <ScrollViewer Name="ForegroundElement" HorizontalAlignment="Stretch" VerticalScrollMode="Enabled" Padding="{StaticResource DetailPageMargin}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" IsTabStop="True">
-        <StackPanel>
-            <Grid >
+    <Grid x:Name="ContentArea">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Margin="{StaticResource DetailPageMargin}" Grid.Row="0">
+            <StackPanel Orientation="Vertical">
                 <TextBlock Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center" Text="{x:Bind ViewModel.SelectedPersonGroup.Name, Mode=OneWay}" Style="{ThemeResource TitleTextBlockStyle}" />
-                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                    <Button Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.AddPersonCommand}">
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe710;" />
-                        <ToolTipService.ToolTip>
-                            <ToolTip Placement="Mouse">
-                                <TextBlock x:Uid="Face_Person_Add"/>
-                            </ToolTip>
-                        </ToolTipService.ToolTip>
-                        <Button.KeyboardAccelerators>
-                            <KeyboardAccelerator Modifiers="Control" Key="N" />
-                        </Button.KeyboardAccelerators>
-                    </Button>
-                    <Button Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.GetPeopleCommand}" HorizontalAlignment="Right">
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe72c;" />
-                        <ToolTipService.ToolTip>
-                            <ToolTip Placement="Mouse">
-                                <TextBlock x:Uid="Refresh"/>
-                            </ToolTip>
-                        </ToolTipService.ToolTip>
-                    </Button>
-                </StackPanel>
-            </Grid>
+                <TextBlock Margin="{StaticResource SmallLeftMargin}" Style="{StaticResource SubtitleTextBlockStyle}">
+                    <Run Text="{x:Bind ViewModel.People.Count, Mode=OneWay}" />
+                    <Run x:Uid="Face_People_People" />
+                </TextBlock>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.AddPersonCommand}">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe710;" />
+                    <ToolTipService.ToolTip>
+                        <ToolTip Placement="Mouse">
+                            <TextBlock x:Uid="Face_Person_Add"/>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="N" />
+                    </Button.KeyboardAccelerators>
+                </Button>
+                <Button Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.GetPeopleCommand}" HorizontalAlignment="Right">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe72c;" />
+                    <ToolTipService.ToolTip>
+                        <ToolTip Placement="Mouse">
+                            <TextBlock x:Uid="Refresh"/>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <ScrollViewer Name="ForegroundElement" HorizontalAlignment="Stretch" VerticalScrollMode="Enabled" Margin="52,20,52,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" IsTabStop="True" Grid.Row="1">
             <GridView x:Name="ContentGridView" ItemsSource="{x:Bind ViewModel.People, Mode=OneWay}" ItemTemplate="{StaticResource ImageTextTemplate}" SelectionMode="None" Margin="0,30,0,0"/>
-        </StackPanel>
-    </ScrollViewer>
+        </ScrollViewer>
+        <controls:Loading IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" Grid.RowSpan="2">
+            <controls:Loading.Background>
+                <media:AcrylicBrush TintColor="Black" TintOpacity="0.4"/>
+            </controls:Loading.Background>
+            <TextBlock Text="{x:Bind ViewModel.LoadingText, Mode=OneWay}" VerticalAlignment="Center" Foreground="White" />
+        </controls:Loading>
+    </Grid>
 </UserControl>

@@ -87,14 +87,6 @@
                     </CommandBar.Content>
                 </CommandBar>
             </controls:ListDetailsView.ListCommandBar>
-            <controls:ListDetailsView.DetailsCommandBar>
-                <CommandBar OverflowButtonVisibility="Collapsed" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                    <CommandBar.Content>
-                        <StackPanel Orientation="Horizontal">
-                        </StackPanel>
-                    </CommandBar.Content>
-                </CommandBar>
-            </controls:ListDetailsView.DetailsCommandBar>
         </controls:ListDetailsView>
         <controls:Loading x:Name="LoadingControl" IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
             <controls:Loading.Background>

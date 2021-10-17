@@ -165,6 +165,9 @@
   <data name="Face_People_NoSelection.Text" xml:space="preserve">
     <value>Selectionner un groupe dans la liste.</value>
   </data>
+  <data name="Face_People_People.Text" xml:space="preserve">
+    <value>personnes</value>
+  </data>
   <data name="Face_Person_Add.Text" xml:space="preserve">
     <value>Ajouter une personne (Ctrl+N)</value>
   </data>

@@ -60,6 +60,7 @@ namespace CognitiveServices.Explorer
             // Core Services
             services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<IFaceClientService, FaceClientService>();
+            services.AddSingleton<IImageInfoService, ImageInfoService>();
 
             // Views and ViewModels
             services.AddTransient<ShellPage>();

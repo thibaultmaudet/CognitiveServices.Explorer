@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -18,53 +19,62 @@ namespace CognitiveServices.Explorer.ViewModels
     {
         private IDialogService dialogService;
 
-        private readonly IFaceClientService faceClientService;
-
-        private IList<DetectedFace> detectedFaces;
+        private IImageInfoService imageInfoService;
 
         private readonly FaceProcessorService faceProcessor;
 
-        private StorageFile openedFile;
-
-        public IList<DetectedFace> DetectedFaces 
+        public IImageInfoService ImageInfoService
         {
-            get { return detectedFaces; }
-            set { SetProperty(ref detectedFaces, value); }
+            get { return imageInfoService; }
+            set
+            {
+                if (imageInfoService != value)
+                {
+                    if (imageInfoService != null)
+                        imageInfoService.PropertyChanged -= ImageInfoServiceChanged;
+
+                    imageInfoService = value;
+
+                    if (imageInfoService != null)
+                        imageInfoService.PropertyChanged += ImageInfoServiceChanged;
+
+                    OnPropertyChanged(nameof(ImageInfoService));
+                }
+
+                void ImageInfoServiceChanged(object sender, PropertyChangedEventArgs args) => OnPropertyChanged(nameof(ImageInfoService));
+            }
         }
 
-        public StorageFile OpenedImage
-        {
-            get { return openedFile; }
-            set { SetProperty(ref openedFile, value); }
-        }
-        
         public ICommand AddFaceCommand
         {
             get { return new RelayCommand(AddFaceAsync); }
         }
 
-        public PictureAnalyseViewModel(IDialogService dialogService, IFaceClientService faceClientService)
+        public PictureAnalyseViewModel(IDialogService dialogService, IFaceClientService faceClientService, IImageInfoService imageInfoService)
         {
             this.dialogService = dialogService;
 
-            this.faceClientService = faceClientService;
-
             faceProcessor = new FaceProcessorService(faceClientService.FaceClient);
+
+            this.ImageInfoService = imageInfoService;
         }
 
         public async void AddFaceAsync()
         {
-            IRandomAccessStreamWithContentType randomAccessStream = await OpenedImage.OpenReadAsync();
+            IRandomAccessStreamWithContentType randomAccessStream = await ImageInfoService.FilePath.OpenReadAsync();
 
             await dialogService.ShowAsync(new AddFaceDialog(randomAccessStream.AsStreamForRead()));
         }
 
         public async Task StartFaceDetection()
         {
-            IRandomAccessStreamWithContentType randomAccessStream = await OpenedImage.OpenReadAsync();
+            IRandomAccessStreamWithContentType randomAccessStream = await ImageInfoService.FilePath.OpenReadAsync();
             Stream stream = randomAccessStream.AsStreamForRead();
 
-            DetectedFaces = await faceProcessor.DetectFacesAsync(stream, true, null);
+            ImageInfoService.People.Clear();
+
+            foreach (DetectedFace detectedFace in await faceProcessor.DetectFacesAsync(stream, true, null))
+                ImageInfoService.People.Add(new() { DetectedFace = detectedFace });
         }
     }
 }

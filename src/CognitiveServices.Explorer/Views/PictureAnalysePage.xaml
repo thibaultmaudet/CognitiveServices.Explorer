@@ -36,13 +36,13 @@
                 <canvas:CanvasVirtualControl.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceDetection" Click="StartFaceDetection_Click" />
-                        <MenuFlyoutSeparator Visibility="{x:Bind ViewModel.DetectedFaces, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}"/>
-                        <MenuFlyoutItem x:Uid="PictureAnalyse_AddPersonFace" Visibility="{x:Bind ViewModel.DetectedFaces, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}" Command="{x:Bind ViewModel.AddFaceCommand}"/>
+                        <MenuFlyoutSeparator Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}"/>
+                        <MenuFlyoutItem x:Uid="PictureAnalyse_AddPersonFace" Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}" Command="{x:Bind ViewModel.AddFaceCommand}"/>
                     </MenuFlyout>
                 </canvas:CanvasVirtualControl.ContextFlyout>
             </canvas:CanvasVirtualControl>
         </Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="15" Visibility="{x:Bind ViewModel.OpenedImage, Converter={StaticResource ObjectToVisibilityConverter}, Mode=OneWay}">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="15" Visibility="{x:Bind ViewModel.ImageInfoService.FilePath, Converter={StaticResource ObjectToVisibilityConverter}, Mode=OneWay}">
             <TextBlock TextAlignment="Center" Style="{StaticResource SubtitleTextBlockStyle}">
                 <Run x:Uid="PictureAnalyse_NoImage" />
                 <LineBreak />

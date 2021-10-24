@@ -1,4 +1,5 @@
-﻿using CognitiveServices.Explorer.Helpers;
+﻿using CognitiveServices.Explorer.Core.Models;
+using CognitiveServices.Explorer.Helpers;
 using CognitiveServices.Explorer.ViewModels;
 
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -38,7 +39,7 @@ namespace CognitiveServices.Explorer.Views
 
         private void ImageCanvas_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (ViewModel.OpenedImage != null)
+            if (ViewModel.ImageInfoService.FilePath != null)
                 FlyoutMenu?.ShowAt(ContentArea, new() { Position = new(ContentArea.ActualWidth / 2, 50), ShowMode = FlyoutShowMode.Transient });
         }
 
@@ -54,7 +55,7 @@ namespace CognitiveServices.Explorer.Views
             if (args.Reason == CanvasCreateResourcesReason.DpiChanged)
                 return;
 
-            if (ViewModel.OpenedImage != null)
+            if (ViewModel.ImageInfoService.FilePath != null)
                 args.TrackAsyncAction(LoadBitmap().AsAsyncAction());
         }
 
@@ -71,7 +72,7 @@ namespace CognitiveServices.Explorer.Views
 
             if (file != null)
             {
-                ViewModel.OpenedImage = file;
+                ViewModel.ImageInfoService.FilePath = file;
 
                 await LoadBitmap();
             }
@@ -79,7 +80,7 @@ namespace CognitiveServices.Explorer.Views
 
         public async void OnGetStorageItem(IReadOnlyList<IStorageItem> items)
         {
-            ViewModel.OpenedImage = items[0] as StorageFile;
+            ViewModel.ImageInfoService.FilePath = items[0] as StorageFile;
 
             await LoadBitmap();
         }
@@ -92,7 +93,7 @@ namespace CognitiveServices.Explorer.Views
                 canvasBitmap = null;
             }
             
-            canvasBitmap = await CanvasVirtualBitmap.LoadAsync(ImageCanvas.Device, await ViewModel.OpenedImage.OpenReadAsync());
+            canvasBitmap = await CanvasVirtualBitmap.LoadAsync(ImageCanvas.Device, await ViewModel.ImageInfoService.FilePath.OpenReadAsync());
 
             if (ImageCanvas == null)
                 return;
@@ -113,9 +114,8 @@ namespace CognitiveServices.Explorer.Views
                 if (canvasBitmap != null)
                     drawingSession.DrawImage(canvasBitmap, region, region);
 
-                if (ViewModel.DetectedFaces != null)
-                    foreach (DetectedFace face in ViewModel.DetectedFaces)
-                        drawingSession.DrawRectangle(face.FaceRectangle.Left, face.FaceRectangle.Top, face.FaceRectangle.Width, face.FaceRectangle.Height, Colors.Blue, 3);
+                foreach (PersonInfo personInfo in ViewModel.ImageInfoService.People)
+                    drawingSession.DrawRectangle(personInfo.DetectedFace.FaceRectangle.Left, personInfo.DetectedFace.FaceRectangle.Top, personInfo.DetectedFace.FaceRectangle.Width, personInfo.DetectedFace.FaceRectangle.Height, Colors.Blue, 3);
             }
         }
     }

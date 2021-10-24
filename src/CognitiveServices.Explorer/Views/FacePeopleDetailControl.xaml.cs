@@ -37,6 +37,8 @@ namespace CognitiveServices.Explorer.Views
 
             control.ViewModel.SelectedPersonGroup = e.NewValue as PersonGroupWithUserData;
 
+            control.ViewModel.FilterQuery = "";
+
             await control.ViewModel.GetPeople();
         }
 

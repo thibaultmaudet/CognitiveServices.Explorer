@@ -162,6 +162,9 @@
   <data name="Face_People.ListHeader" xml:space="preserve">
     <value>Gestion des groupes et des personnes</value>
   </data>
+  <data name="Face_People_Filter.PlaceholderText" xml:space="preserve">
+    <value>Filtrer les personnes</value>
+  </data>
   <data name="Face_People_NoSelection.Text" xml:space="preserve">
     <value>Selectionner un groupe dans la liste.</value>
   </data>

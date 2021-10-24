@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -11,6 +12,8 @@ using CognitiveServices.Explorer.Models;
 using CognitiveServices.Explorer.Views.Dialogs;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace CognitiveServices.Explorer.ViewModels
 {
@@ -27,8 +30,11 @@ namespace CognitiveServices.Explorer.ViewModels
         private IList<PersonGroupWithUserData> personGroups;
         private IList<ExtendedPerson> people;
 
+        private ObservableCollection<ExtendedPerson> filteredPeople;
+
         private PersonGroupWithUserData selectedPersonGroup;
 
+        private string filterQuery;
         private string loadingText;
 
         public bool IsLoading
@@ -61,6 +67,11 @@ namespace CognitiveServices.Explorer.ViewModels
             get { return new AsyncRelayCommand(GetPeople); }
         }
 
+        public ICommand PeopleFilterTextChangedEventCommand
+        {
+            get { return new RelayCommand(PeopleFilterTextChangedEvent); }
+        }
+
         public ICommand RemoveGroupCommand
         {
             get { return new RelayCommand(RemoveGroup); }
@@ -77,10 +88,23 @@ namespace CognitiveServices.Explorer.ViewModels
             set { SetProperty(ref personGroups, value); }
         }
 
+
         public IList<ExtendedPerson> People
         {
             get { return people; }
             set { SetProperty(ref people, value); }
+        }
+
+        public ObservableCollection<ExtendedPerson> FilteredPeople
+        {
+            get { return filteredPeople; }
+            set { SetProperty(ref filteredPeople, value); }
+        }
+        
+        public string FilterQuery
+        {
+            get { return filterQuery; }
+            set { SetProperty(ref filterQuery, value); }
         }
 
         public string LoadingText
@@ -162,6 +186,11 @@ namespace CognitiveServices.Explorer.ViewModels
 
             People = extendedPeople;
 
+            if (string.IsNullOrEmpty(FilterQuery))
+                FilteredPeople = new(People);
+            else
+                PeopleFilterTextChangedEvent();
+
             IsLoading = false;
         }
 
@@ -179,6 +208,9 @@ namespace CognitiveServices.Explorer.ViewModels
             await GetPeople();
         }
 
-
+        private void PeopleFilterTextChangedEvent()
+        {
+            FilteredPeople = new(from person in People orderby person.Name where new CultureInfo("fr-FR").CompareInfo.IndexOf(person.Name, FilterQuery, CompareOptions.IgnoreCase) >= 0 select person);
+        }
     }
 }

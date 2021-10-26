@@ -104,6 +104,11 @@ namespace CognitiveServices.Explorer.Core.Services
             return await faceClient.Face.DetectWithStreamAsync(stream, returnFaceLandmarks: returnFaceLandmarks, returnFaceAttributes: returnFaceAttributes);
         }
 
+        public async Task<IList<DetectedFace>> DetectFacesAsync(Stream stream, bool returnFaceLandmarks, IList<FaceAttributeType> returnFaceAttributes, string recognitionModel)
+        {
+            return await faceClient.Face.DetectWithStreamAsync(stream, returnFaceLandmarks: returnFaceLandmarks, returnFaceAttributes: returnFaceAttributes, recognitionModel: recognitionModel);
+        }
+
         public async Task AddFace(string groupId, Guid personId, Stream imagePath)
         {
             await faceClient.PersonGroupPerson.AddFaceFromStreamAsync(groupId, personId, imagePath);
@@ -112,6 +117,18 @@ namespace CognitiveServices.Explorer.Core.Services
         public async Task TrainingGroupAsync(string groupId)
         {
             await faceClient.PersonGroup.TrainAsync(groupId);
+        }
+
+        public async Task<IList<IdentifyResult>> IdentifyFaceAsync(IList<Guid> faceIds, string personGroupId)
+        {
+            return await faceClient.Face.IdentifyAsync(faceIds, personGroupId);
+        }
+
+        public async Task<string> GetPersonNameAsync(string personGroupId, Guid personGuid)
+        {
+            Person person = await faceClient.PersonGroupPerson.GetAsync(personGroupId, personGuid);
+
+            return person.Name;
         }
     }
 }

@@ -210,6 +210,9 @@
   <data name="PictureAnalyse_StartFaceDetection.Text" xml:space="preserve">
     <value>Lancer la détection faciale</value>
   </data>
+  <data name="PictureAnalyse_StartFaceRecognition.Text" xml:space="preserve">
+    <value>Lancer la reconnaisance faciale</value>
+  </data>
   <data name="Refresh.Text" xml:space="preserve">
     <value>Actualiser</value>
   </data>

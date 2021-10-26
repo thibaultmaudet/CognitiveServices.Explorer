@@ -36,6 +36,7 @@
                 <canvas:CanvasVirtualControl.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceDetection" Click="StartFaceDetection_Click" />
+                        <MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceRecognition" Click="StartFaceRecognition_Click" />
                         <MenuFlyoutSeparator Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}"/>
                         <MenuFlyoutItem x:Uid="PictureAnalyse_AddPersonFace" Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}" Command="{x:Bind ViewModel.AddFaceCommand}"/>
                     </MenuFlyout>

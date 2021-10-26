@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CognitiveServices.Explorer.Contracts.Services;
+using CognitiveServices.Explorer.Core.Models;
 using CognitiveServices.Explorer.Core.Services;
 using CognitiveServices.Explorer.Views.Dialogs;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -20,6 +22,8 @@ namespace CognitiveServices.Explorer.ViewModels
         private IDialogService dialogService;
 
         private IImageInfoService imageInfoService;
+
+        private IList<PersonGroupWithUserData> personGroups;
 
         private readonly FaceProcessorService faceProcessor;
 
@@ -57,6 +61,11 @@ namespace CognitiveServices.Explorer.ViewModels
             faceProcessor = new FaceProcessorService(faceClientService.FaceClient);
 
             this.ImageInfoService = imageInfoService;
+
+            Task.Run(async () =>
+            {
+                personGroups = await faceProcessor.GetPersonGroupsAsync();
+            });
         }
 
         public async void AddFaceAsync()
@@ -75,6 +84,41 @@ namespace CognitiveServices.Explorer.ViewModels
 
             foreach (DetectedFace detectedFace in await faceProcessor.DetectFacesAsync(stream, true, null))
                 ImageInfoService.People.Add(new() { DetectedFace = detectedFace });
+        }
+
+        public async Task StartFaceRecognitionAsync()
+        {
+            ImageInfoService.People.Clear();
+
+            foreach (PersonGroup personGroup in personGroups)
+            {
+                IRandomAccessStreamWithContentType randomAccessStream = await ImageInfoService.FilePath.OpenReadAsync();
+                Stream stream = randomAccessStream.AsStreamForRead();
+
+                foreach (DetectedFace detectedFace in await faceProcessor.DetectFacesAsync(stream, true, null, personGroup.RecognitionModel))
+                {
+                    double latestConfidence = 0;
+
+                    IList<IdentifyResult> identifyResults = await faceProcessor.IdentifyFaceAsync(new List<Guid>() { detectedFace.FaceId.Value }, personGroup.PersonGroupId);
+
+                    if (identifyResults == null)
+                        continue;
+
+                    foreach (var identifyResult in identifyResults)
+                        if (identifyResult.Candidates.Count > 0 && latestConfidence < identifyResult.Candidates[0].Confidence)
+                        {
+                            latestConfidence = identifyResult.Candidates[0].Confidence;
+
+                            if (ImageInfoService.People.Count > 0 && ImageInfoService.People.First(x => x.DetectedFace == detectedFace) != null)
+                                ImageInfoService.People.Remove(ImageInfoService.People.First(x => x.DetectedFace == detectedFace));
+                                
+                            ImageInfoService.People.Add(new() { DetectedFace = detectedFace, Group = personGroup, IdentifyResult = identifyResult });
+                        }
+                }
+            }
+
+            foreach (PersonInfo personInfo in ImageInfoService.People)
+                personInfo.Name = (personInfo.IdentifyResult != null && personInfo.IdentifyResult.Candidates.Count > 0) ? await faceProcessor.GetPersonNameAsync(personInfo.Group.PersonGroupId, personInfo.IdentifyResult.Candidates[0].PersonId) : "<Inconnu>";
         }
     }
 }

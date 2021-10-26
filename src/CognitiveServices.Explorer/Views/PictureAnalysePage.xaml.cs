@@ -3,7 +3,6 @@ using CognitiveServices.Explorer.Helpers;
 using CognitiveServices.Explorer.ViewModels;
 
 using CommunityToolkit.Mvvm.DependencyInjection;
-using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -17,7 +16,6 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Graphics.Display;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
@@ -46,6 +44,13 @@ namespace CognitiveServices.Explorer.Views
         private async void StartFaceDetection_Click(object sender, RoutedEventArgs e)
         {
             await ViewModel.StartFaceDetection();
+            
+            ImageCanvas.Invalidate();
+        }
+        
+        private async void StartFaceRecognition_Click(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.StartFaceRecognitionAsync();
             
             ImageCanvas.Invalidate();
         }
@@ -115,7 +120,12 @@ namespace CognitiveServices.Explorer.Views
                     drawingSession.DrawImage(canvasBitmap, region, region);
 
                 foreach (PersonInfo personInfo in ViewModel.ImageInfoService.People)
+                {
                     drawingSession.DrawRectangle(personInfo.DetectedFace.FaceRectangle.Left, personInfo.DetectedFace.FaceRectangle.Top, personInfo.DetectedFace.FaceRectangle.Width, personInfo.DetectedFace.FaceRectangle.Height, Colors.Blue, 3);
+
+                    if (!string.IsNullOrEmpty(personInfo.Name))
+                        drawingSession.DrawText(personInfo.Name, new Vector2(personInfo.DetectedFace.FaceRectangle.Left, personInfo.DetectedFace.FaceRectangle.Top + personInfo.DetectedFace.FaceRectangle.Height), Colors.AliceBlue);
+                }
             }
         }
     }

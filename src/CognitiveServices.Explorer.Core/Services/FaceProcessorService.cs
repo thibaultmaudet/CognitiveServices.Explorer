@@ -68,7 +68,7 @@ namespace CognitiveServices.Explorer.Core.Services
         {
             IList<PersonGroupWithUserData> personGroupWithUserDatas = new List<PersonGroupWithUserData>();
 
-            foreach (PersonGroup personGroup in await faceClient.PersonGroup.ListAsync())
+            foreach (PersonGroup personGroup in await faceClient.PersonGroup.ListAsync(returnRecognitionModel: true))
                 personGroupWithUserDatas.Add(new(personGroup));
 
             if (sortOrder == SortOrder.Ascending)
@@ -121,7 +121,16 @@ namespace CognitiveServices.Explorer.Core.Services
 
         public async Task<IList<IdentifyResult>> IdentifyFaceAsync(IList<Guid> faceIds, string personGroupId)
         {
-            return await faceClient.Face.IdentifyAsync(faceIds, personGroupId);
+            try
+            {
+                return await faceClient.Face.IdentifyAsync(faceIds, personGroupId);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return default;
         }
 
         public async Task<string> GetPersonNameAsync(string personGroupId, Guid personGuid)

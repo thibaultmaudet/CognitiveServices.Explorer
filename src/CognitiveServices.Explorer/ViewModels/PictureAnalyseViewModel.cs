@@ -108,12 +108,21 @@ namespace CognitiveServices.Explorer.ViewModels
                         if (identifyResult.Candidates.Count > 0 && latestConfidence < identifyResult.Candidates[0].Confidence)
                         {
                             latestConfidence = identifyResult.Candidates[0].Confidence;
+                            
+                            if (ImageInfoService.People.Count > 0 && ImageInfoService.People.Any(x => x.DetectedFace.FaceRectangle.Height == detectedFace.FaceRectangle.Height && x.DetectedFace.FaceRectangle.Left == detectedFace.FaceRectangle.Left && x.DetectedFace.FaceRectangle.Top == detectedFace.FaceRectangle.Top && x.DetectedFace.FaceRectangle.Width == detectedFace.FaceRectangle.Width))
+                                ImageInfoService.People.Remove(ImageInfoService.People.First(x => x.DetectedFace.FaceRectangle.Height == detectedFace.FaceRectangle.Height && x.DetectedFace.FaceRectangle.Left == detectedFace.FaceRectangle.Left && x.DetectedFace.FaceRectangle.Top == detectedFace.FaceRectangle.Top && x.DetectedFace.FaceRectangle.Width == detectedFace.FaceRectangle.Width));
 
-                            if (ImageInfoService.People.Count > 0 && ImageInfoService.People.First(x => x.DetectedFace == detectedFace) != null)
-                                ImageInfoService.People.Remove(ImageInfoService.People.First(x => x.DetectedFace == detectedFace));
-                                
-                            ImageInfoService.People.Add(new() { DetectedFace = detectedFace, Group = personGroup, IdentifyResult = identifyResult });
+                            ImageInfoService.People.Add(new() { DetectedFace = detectedFace, IdentifyResult = identifyResult, Group = personGroup });
                         }
+                        else if (ImageInfoService.People.Count > 0 && ImageInfoService.People.Any(x => x.DetectedFace.FaceRectangle.Height == detectedFace.FaceRectangle.Height && x.DetectedFace.FaceRectangle.Left == detectedFace.FaceRectangle.Left && x.DetectedFace.FaceRectangle.Top == detectedFace.FaceRectangle.Top && x.DetectedFace.FaceRectangle.Width == detectedFace.FaceRectangle.Width && x.IdentifyResult == null))
+                        {
+                            ImageInfoService.People.Remove(ImageInfoService.People.First(x => x.DetectedFace.FaceRectangle.Height == detectedFace.FaceRectangle.Height && x.DetectedFace.FaceRectangle.Left == detectedFace.FaceRectangle.Left && x.DetectedFace.FaceRectangle.Top == detectedFace.FaceRectangle.Top && x.DetectedFace.FaceRectangle.Width == detectedFace.FaceRectangle.Width));
+
+                            ImageInfoService.People.Add(new() { DetectedFace = detectedFace });
+                        }
+                        else if (!ImageInfoService.People.Any(x => x.DetectedFace.FaceRectangle.Height == detectedFace.FaceRectangle.Height && x.DetectedFace.FaceRectangle.Left == detectedFace.FaceRectangle.Left && x.DetectedFace.FaceRectangle.Top == detectedFace.FaceRectangle.Top && x.DetectedFace.FaceRectangle.Width == detectedFace.FaceRectangle.Width))
+                            ImageInfoService.People.Add(new() { DetectedFace = detectedFace });
+
                 }
             }
 

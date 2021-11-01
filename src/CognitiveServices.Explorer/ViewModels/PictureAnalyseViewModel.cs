@@ -24,6 +24,8 @@ namespace CognitiveServices.Explorer.ViewModels
 {
     public class PictureAnalyseViewModel : ObservableRecipient
     {
+        private bool isLoading;
+
         private IDialogService dialogService;
 
         private IImageInfoService imageInfoService;
@@ -31,6 +33,14 @@ namespace CognitiveServices.Explorer.ViewModels
         private IList<PersonGroupWithUserData> personGroups;
 
         private readonly FaceProcessorService faceProcessor;
+
+        private string loadingText;
+
+        public bool IsLoading
+        {
+            get { return isLoading; }
+            set { SetProperty(ref isLoading, value); }
+        }
 
         public IImageInfoService ImageInfoService
         {
@@ -59,6 +69,12 @@ namespace CognitiveServices.Explorer.ViewModels
             get { return new RelayCommand(AddFaceAsync); }
         }
 
+        public string LoadingText
+        {
+            get { return loadingText; }
+            set { SetProperty(ref loadingText, value); }
+        }
+
         public PictureAnalyseViewModel(IDialogService dialogService, IFaceClientService faceClientService, IImageInfoService imageInfoService)
         {
             this.dialogService = dialogService;
@@ -82,6 +98,10 @@ namespace CognitiveServices.Explorer.ViewModels
 
         public async Task StartFaceDetection()
         {
+            IsLoading = true;
+
+            LoadingText = "Détection des visages en cours...";
+
             IRandomAccessStreamWithContentType randomAccessStream = await ImageInfoService.FilePath.OpenReadAsync();
             Stream stream = randomAccessStream.AsStreamForRead();
 
@@ -89,10 +109,16 @@ namespace CognitiveServices.Explorer.ViewModels
 
             foreach (DetectedFace detectedFace in await faceProcessor.DetectFacesAsync(stream, true, new FaceAttributeType[] { FaceAttributeType.Gender, FaceAttributeType.Age, FaceAttributeType.Smile, FaceAttributeType.Emotion, FaceAttributeType.Glasses, FaceAttributeType.Hair }))
                 ImageInfoService.People.Add(new() { DetectedFace = detectedFace });
+
+            IsLoading = false;
         }
 
         public async Task StartFaceRecognitionAsync()
         {
+            IsLoading = true;
+
+            LoadingText = "Détection et identification des visages en cours...";
+
             ImageInfoService.People.Clear();
 
             foreach (PersonGroup personGroup in personGroups)
@@ -133,6 +159,8 @@ namespace CognitiveServices.Explorer.ViewModels
 
             foreach (PersonInfo personInfo in ImageInfoService.People)
                 personInfo.Name = (personInfo.IdentifyResult != null && personInfo.IdentifyResult.Candidates.Count > 0) ? await faceProcessor.GetPersonNameAsync(personInfo.Group.PersonGroupId, personInfo.IdentifyResult.Candidates[0].PersonId) : "Person_Unknown".GetLocalized();
+
+            IsLoading = false;
         }
 
         public static StackPanel GetPersonInformations(PersonInfo personInfo)

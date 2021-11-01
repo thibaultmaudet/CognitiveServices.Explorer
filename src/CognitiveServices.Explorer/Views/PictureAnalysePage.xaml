@@ -9,6 +9,8 @@
     xmlns:dd="using:CognitiveServices.Explorer.Services.DragAndDrop"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:media="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     Style="{StaticResource PageStyle}">
@@ -51,5 +53,11 @@
             </TextBlock>
             <Button x:Uid="OpenImage" HorizontalAlignment="Center"  Click="OpenImage_Click" />
         </StackPanel>
+        <controls:Loading x:Name="LoadingControl" IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
+            <controls:Loading.Background>
+                <media:AcrylicBrush TintColor="Black" TintOpacity="0.4"/>
+            </controls:Loading.Background>
+            <TextBlock Text="{x:Bind ViewModel.LoadingText, Mode=OneWay}" VerticalAlignment="Center" Foreground="White" />
+        </controls:Loading>
     </Grid>
 </Page>

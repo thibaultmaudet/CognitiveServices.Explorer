@@ -3,6 +3,7 @@ using CognitiveServices.Explorer.Helpers;
 using CognitiveServices.Explorer.ViewModels;
 
 using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -127,6 +128,41 @@ namespace CognitiveServices.Explorer.Views
                         drawingSession.DrawText(personInfo.Name, new Vector2(personInfo.DetectedFace.FaceRectangle.Left, personInfo.DetectedFace.FaceRectangle.Top + personInfo.DetectedFace.FaceRectangle.Height), Colors.AliceBlue);
                 }
             }
+        }
+
+        private void ImageCanvas_PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            if (ViewModel.ImageInfoService.People.Count == 0)
+                return;
+
+            double mouseX = e.GetCurrentPoint(ImageCanvas).Position.X;
+            double mouseY = e.GetCurrentPoint(ImageCanvas).Position.Y;
+
+            bool mouseOverFace = false;
+
+            foreach (PersonInfo personInfo in ViewModel.ImageInfoService.People)
+            {
+                FaceRectangle detectedFaceRectangle = personInfo.DetectedFace.FaceRectangle;
+
+                if (mouseX >= detectedFaceRectangle.Left && mouseX <= detectedFaceRectangle.Left + detectedFaceRectangle.Width && mouseY >= detectedFaceRectangle.Top && mouseY <= detectedFaceRectangle.Top + detectedFaceRectangle.Height)
+                {
+                    if (ToolTipService.GetToolTip(ImageCanvas) == null)
+                        ToolTipService.SetToolTip(ImageCanvas, new ToolTip());
+
+                    (ToolTipService.GetToolTip(ImageCanvas) as ToolTip).IsOpen = true;
+                    (ToolTipService.GetToolTip(ImageCanvas) as ToolTip).Content = PictureAnalyseViewModel.GetPersonInformations(personInfo);
+                    (ToolTipService.GetToolTip(ImageCanvas) as ToolTip).Placement = PlacementMode.Bottom;
+                    (ToolTipService.GetToolTip(ImageCanvas) as ToolTip).PlacementRect = new(mouseX, mouseY, 0, 0);
+                    (ToolTipService.GetToolTip(ImageCanvas) as ToolTip).VerticalOffset = 20;
+
+                    mouseOverFace = true;
+
+                    break;
+                }
+            }
+            
+            if (!mouseOverFace && ToolTipService.GetToolTip(ImageCanvas) != null)
+                (ToolTipService.GetToolTip(ImageCanvas) as ToolTip).IsOpen = false;
         }
     }
 }

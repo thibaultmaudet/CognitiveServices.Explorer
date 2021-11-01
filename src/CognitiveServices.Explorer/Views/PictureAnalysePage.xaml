@@ -32,7 +32,7 @@
             <dd:DropConfiguration DropStorageItemsAction="{x:Bind GetStorageItem}"  />
         </dd:DragDropService.Configuration>
         <Grid>
-            <canvas:CanvasVirtualControl x:Name="ImageCanvas" RegionsInvalidated="ImageVirtualControl_RegionsInvalidated" CreateResources="ImageCanvas_CreateResources" Tapped="ImageCanvas_Tapped">
+            <canvas:CanvasVirtualControl x:Name="ImageCanvas" RegionsInvalidated="ImageVirtualControl_RegionsInvalidated" CreateResources="ImageCanvas_CreateResources" Tapped="ImageCanvas_Tapped" PointerMoved="ImageCanvas_PointerMoved">
                 <canvas:CanvasVirtualControl.ContextFlyout>
                     <MenuFlyout>
                         <MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceDetection" Click="StartFaceDetection_Click" />

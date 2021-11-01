@@ -198,6 +198,54 @@
   <data name="OpenImage.Content" xml:space="preserve">
     <value>Ouvrir une image</value>
   </data>
+  <data name="Person_Informations_Title" xml:space="preserve">
+    <value>Informations sur la personne</value>
+  </data>
+  <data name="Person_Recognition_Age_Prefix" xml:space="preserve">
+    <value>Age (approximatif) : </value>
+  </data>
+  <data name="Person_Recognition_Age_Suffix" xml:space="preserve">
+    <value> ans</value>
+  </data>
+  <data name="Person_Recognition_Group" xml:space="preserve">
+    <value>Groupe : </value>
+  </data>
+  <data name="Person_Recognition_Hair_Black" xml:space="preserve">
+    <value>Couleur des cheveux : Noir</value>
+  </data>
+  <data name="Person_Recognition_Hair_Blond" xml:space="preserve">
+    <value>Couleur des cheveux : Blond</value>
+  </data>
+  <data name="Person_Recognition_Hair_Brown" xml:space="preserve">
+    <value>Couleur des cheveux : Brun</value>
+  </data>
+  <data name="Person_Recognition_Hair_Gray" xml:space="preserve">
+    <value>Couleur des cheveux : Gris</value>
+  </data>
+  <data name="Person_Recognition_Hair_Other" xml:space="preserve">
+    <value>Couleur des cheveux : Autre</value>
+  </data>
+  <data name="Person_Recognition_Hair_Red" xml:space="preserve">
+    <value>Couleur des cheveux : Roux</value>
+  </data>
+  <data name="Person_Recognition_Hair_Unknown" xml:space="preserve">
+    <value>Couleur des cheveux : Inconnu</value>
+  </data>
+  <data name="Person_Recognition_Hair_White" xml:space="preserve">
+    <value>Couleur des cheveux : Blanc</value>
+  </data>
+  <data name="Person_Recognition_Positive_Match" xml:space="preserve">
+    <value>Identification positive : </value>
+  </data>
+  <data name="Person_Sex_Female" xml:space="preserve">
+    <value>Sexe : Féminin</value>
+  </data>
+  <data name="Person_Sex_Male" xml:space="preserve">
+    <value>Sexe : Masculin</value>
+  </data>
+  <data name="Person_Unknown" xml:space="preserve">
+    <value>&lt;Inconnu&gt;</value>
+  </data>
   <data name="PictureAnalyse_AddPersonFace.Text" xml:space="preserve">
     <value>Ajouter un visage</value>
   </data>

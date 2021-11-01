@@ -20,7 +20,7 @@
     </Page.Resources>
     <Grid x:Name="ContentArea" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" AllowDrop="True">
         <Grid.Resources>
-            <muxc:CommandBarFlyout x:Name="FlyoutMenu">
+            <muxc:CommandBarFlyout x:Name="ImageCommandBar">
                 <muxc:CommandBarFlyout.PrimaryCommands>
                     <AppBarButton Icon="OpenFile" Click="OpenImage_Click">
                         <ToolTipService.ToolTip>
@@ -29,20 +29,18 @@
                     </AppBarButton>
                 </muxc:CommandBarFlyout.PrimaryCommands>
             </muxc:CommandBarFlyout>
+            <MenuFlyout x:Name="ImageMenu">
+                <MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceDetection" Click="StartFaceDetection_Click" />
+                <MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceRecognition" Click="StartFaceRecognition_Click" />
+                <MenuFlyoutSeparator Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}"/>
+                <MenuFlyoutItem x:Uid="PictureAnalyse_AddPersonFace" Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}" Command="{x:Bind ViewModel.AddFaceCommand}"/>
+            </MenuFlyout>
         </Grid.Resources>
         <dd:DragDropService.Configuration>
             <dd:DropConfiguration DropStorageItemsAction="{x:Bind GetStorageItem}"  />
         </dd:DragDropService.Configuration>
         <Grid>
-            <canvas:CanvasVirtualControl x:Name="ImageCanvas" RegionsInvalidated="ImageVirtualControl_RegionsInvalidated" CreateResources="ImageCanvas_CreateResources" Tapped="ImageCanvas_Tapped" PointerMoved="ImageCanvas_PointerMoved">
-                <canvas:CanvasVirtualControl.ContextFlyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceDetection" Click="StartFaceDetection_Click" />
-                        <MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceRecognition" Click="StartFaceRecognition_Click" />
-                        <MenuFlyoutSeparator Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}"/>
-                        <MenuFlyoutItem x:Uid="PictureAnalyse_AddPersonFace" Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}" Command="{x:Bind ViewModel.AddFaceCommand}"/>
-                    </MenuFlyout>
-                </canvas:CanvasVirtualControl.ContextFlyout>
+            <canvas:CanvasVirtualControl x:Name="ImageCanvas" RegionsInvalidated="ImageVirtualControl_RegionsInvalidated" CreateResources="ImageCanvas_CreateResources" Tapped="ImageCanvas_Tapped" PointerMoved="ImageCanvas_PointerMoved" RightTapped="ImageCanvas_RightTapped">
             </canvas:CanvasVirtualControl>
         </Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="15" Visibility="{x:Bind ViewModel.ImageInfoService.FilePath, Converter={StaticResource ObjectToVisibilityConverter}, Mode=OneWay}">

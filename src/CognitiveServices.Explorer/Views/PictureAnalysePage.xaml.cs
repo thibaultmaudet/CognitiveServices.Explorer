@@ -39,7 +39,13 @@ namespace CognitiveServices.Explorer.Views
         private void ImageCanvas_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (ViewModel.ImageInfoService.FilePath != null)
-                FlyoutMenu?.ShowAt(ContentArea, new() { Position = new(ContentArea.ActualWidth / 2, 50), ShowMode = FlyoutShowMode.Transient });
+                ImageCommandBar?.ShowAt(ContentArea, new() { Position = new(ContentArea.ActualWidth / 2, 50), ShowMode = FlyoutShowMode.Transient });
+        }
+
+        private void ImageCanvas_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            if (ViewModel.ImageInfoService.FilePath != null)
+                ImageMenu?.ShowAt(ContentArea, e.GetPosition(ContentArea));
         }
 
         private async void StartFaceDetection_Click(object sender, RoutedEventArgs e)

@@ -1,0 +1,13 @@
+parameters:
+  token: ''
+
+jobs:
+- job: ${{ parameters.name }}
+  displayName: Copy to GitHub
+  pool:
+    vmImage: windows-latest
+  steps:
+  - bash: |
+      git push --prune https://$(githubpersonaltoken)@github.com/thibaultmaudet/CognitiveServices.Explorer.git \
+        +refs/remotes/origin/*:refs/heads/* +refs/tags/*:refs/tags/*
+    displayName: 'Copy to Github'

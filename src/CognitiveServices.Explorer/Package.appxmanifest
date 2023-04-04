@@ -4,7 +4,9 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  xmlns:genTemplate="http://schemas.microsoft.com/appx/developer/windowsTemplateStudio"
+  xmlns:genTemplate="http://schemas.microsoft.com/appx/developer/templatestudio"
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
   IgnorableNamespaces="uap rescap genTemplate">
 
   <Identity
@@ -15,7 +17,7 @@
   <Properties>
     <DisplayName>CognitiveServices.Explorer</DisplayName>
     <PublisherDisplayName>Thibault MAUDET</PublisherDisplayName>
-    <Logo>Images\StoreLogo.png</Logo>
+    <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -35,12 +37,23 @@
         DisplayName="ms-resource:AppDisplayName"
         Description="ms-resource:AppDescription"
         BackgroundColor="transparent"
-        Square150x150Logo="Images\Square150x150Logo.png"
-        Square44x44Logo="Images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
-        <uap:SplashScreen Image="Images\SplashScreen.png" />
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
+          <desktop:Extension Category="windows.toastNotificationActivation">
+              <desktop:ToastNotificationActivation ToastActivatorCLSID="33A26DA5-ECC3-4E5E-B7E0-62C0FF3DB0CD" />
+          </desktop:Extension>
+
+          <com:Extension Category="windows.comServer">
+              <com:ComServer>
+                  <com:ExeServer Executable="CognitiveServices.Explorer.exe" Arguments="----AppNotificationActivated:" DisplayName="Toast activator">
+                      <com:Class Id="33A26DA5-ECC3-4E5E-B7E0-62C0FF3DB0CD" DisplayName="Toast activator"/>
+                  </com:ExeServer>
+              </com:ComServer>
+          </com:Extension>
       </Extensions>
     </Application>
   </Applications>
@@ -50,10 +63,9 @@
   </Capabilities>
 
   <genTemplate:Metadata>
-    <genTemplate:Item Name="generator" Value="Windows Template Studio"/>
-    <genTemplate:Item Name="wizardVersion" Version="v4.1.21179.1" />
-    <genTemplate:Item Name="templatesVersion" Version="v4.1.21179.1" />
-    <genTemplate:Item Name="projectType" Value="SplitView" />
+    <genTemplate:Item Name="generator" Value="Template Studio"/>
+    <genTemplate:Item Name="wizardVersion" Version="v5.2.1" />
+    <genTemplate:Item Name="projectType" Value="NavView" />
     <genTemplate:Item Name="framework" Value="MVVMToolkit" />
     <genTemplate:Item Name="platform" Value="WinUI" />
     <genTemplate:Item Name="appmodel" Value="Desktop" />

@@ -1,21 +1,19 @@
 ﻿using CognitiveServices.Explorer.Core.Models;
+
 using Windows.ApplicationModel.Contacts;
 using Windows.Storage.Streams;
 
-namespace CognitiveServices.Explorer.Models
+namespace CognitiveServices.Explorer.Models;
+
+public class ExtendedPerson : PersonWithUserData
 {
-    public class ExtendedPerson : PersonWithUserData
+    public Contact Contact { get; }
+
+    public ExtendedPerson(PersonWithUserData personWithUserData) : base(personWithUserData)
     {
-        private Contact contact;
+        Contact = new() { Name = Name };
 
-        public Contact Contact { get => contact; }
-
-        public ExtendedPerson(PersonWithUserData personWithUserData) : base(personWithUserData)
-        {
-            contact = new() { Name = Name };
-
-            if (UserData != null && !string.IsNullOrEmpty(UserData.PictureUrl))
-                contact.SourceDisplayPicture = RandomAccessStreamReference.CreateFromUri(new(UserData.PictureUrl));
-        }
+        if (UserData != null && !string.IsNullOrEmpty(UserData.ImageUrl))
+            Contact.SourceDisplayPicture = RandomAccessStreamReference.CreateFromUri(new(UserData.ImageUrl));
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace CognitiveServices.Explorer.Contracts.ViewModels
-{
-    public interface INavigationAware
-    {
-        void OnNavigatedTo(object parameter);
+﻿namespace CognitiveServices.Explorer.Contracts.ViewModels;
 
-        void OnNavigatedFrom();
-    }
+public interface INavigationAware
+{
+    void OnNavigatedTo(object parameter);
+
+    void OnNavigatedFrom();
 }

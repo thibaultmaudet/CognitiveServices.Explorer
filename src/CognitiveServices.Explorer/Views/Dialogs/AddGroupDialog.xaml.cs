@@ -1,19 +1,26 @@
-﻿using CognitiveServices.Explorer.ViewModels.Dialogs;
+﻿using Microsoft.UI.Xaml.Controls;
 
-using CommunityToolkit.Mvvm.DependencyInjection;
+namespace CognitiveServices.Explorer.Views.Dialogs;
 
-using Microsoft.UI.Xaml.Controls;
-
-namespace CognitiveServices.Explorer.Views.Dialogs
+public sealed partial class AddGroupDialog : ContentDialog
 {
-    public sealed partial class AddGroupDialog : ContentDialog
-    {
-        public AddGroupViewModel ViewModel { get; }
+    public Dictionary<string, string> RecognitionModels => new() { { "recognition_01", "Version 1" }, { "recognition_02", "Version 2" }, { "recognition_03", "Version 3" }, { "recognition_04", "Version 4" } };
 
-        public AddGroupDialog()
-        {
-            ViewModel = Ioc.Default.GetService<AddGroupViewModel>();
-            InitializeComponent();
-        }
+    public string GroupDescription;
+    public string GroupName;
+    public string SelectedRecognictionModel;
+
+    public AddGroupDialog()
+    {
+        InitializeComponent();
+
+        GroupDescription = "";
+        GroupName = "";
+        SelectedRecognictionModel = RecognitionModels.Keys.Last();
+    }
+
+    private void GroupNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        IsPrimaryButtonEnabled = !string.IsNullOrEmpty(GroupName);
     }
 }

@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace CognitiveServices.Explorer.Contracts.Services;
 
-namespace CognitiveServices.Explorer.Contracts.Services
+public interface IPageService
 {
-    public interface IPageService
-    {
-        Type GetPageType(string key);
-    }
+    Type GetPageType(string key);
 }

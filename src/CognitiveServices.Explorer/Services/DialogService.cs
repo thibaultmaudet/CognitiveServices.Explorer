@@ -1,26 +1,29 @@
 ﻿using CognitiveServices.Explorer.Contracts.Services;
+
 using Microsoft.UI.Xaml.Controls;
-using System;
-using System.Threading.Tasks;
 
-namespace CognitiveServices.Explorer.Services
+namespace CognitiveServices.Explorer.Services;
+
+public class DialogService : IDialogService
 {
-    public class DialogService : IDialogService
+    private ContentDialog contentDialog;
+
+    public DialogService()
     {
-        private ContentDialog contentDialog;
+        contentDialog = new();
+    }
 
-        public void SetPrimaryButtonState(bool isEnabled)
-        {
-            contentDialog.IsPrimaryButtonEnabled = isEnabled;
-        }
+    public void SetPrimaryButtonState(bool isEnabled)
+    {
+        contentDialog.IsPrimaryButtonEnabled = isEnabled;
+    }
 
-        public async Task ShowAsync(ContentDialog dialog)
-        {
-            dialog.XamlRoot = App.MainWindow.Content.XamlRoot;
+    public async Task<ContentDialogResult> ShowAsync(ContentDialog dialog)
+    {
+        dialog.XamlRoot = App.MainWindow.Content.XamlRoot;
 
-            contentDialog = dialog;
+        contentDialog = dialog;
 
-            await dialog.ShowAsync();
-        }
+        return await dialog.ShowAsync();
     }
 }

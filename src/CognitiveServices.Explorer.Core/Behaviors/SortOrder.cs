@@ -1,9 +1,8 @@
-﻿namespace CognitiveServices.Explorer.Core.Behaviors
+﻿namespace CognitiveServices.Explorer.Core.Behaviors;
+
+public enum SortOrder
 {
-    public enum SortOrder
-    {
-        Ascending = 1,
-        Descending = 2,
-        None = 0
-    }
+    Ascending = 1,
+    Descending = 2,
+    None = 0
 }

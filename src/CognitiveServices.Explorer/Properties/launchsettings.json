@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "CognitiveServices.Explorer (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "CognitiveServices.Explorer (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}

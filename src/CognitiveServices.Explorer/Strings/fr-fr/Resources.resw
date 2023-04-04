@@ -126,6 +126,27 @@
   <data name="AppDisplayName" xml:space="preserve">
     <value>CognitiveServices.Explorer</value>
   </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>CognitiveServices.Explorer</value>
+  </data>
+  <data name="Shell_Home.Content" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Settings_Personalization.Text" xml:space="preserve">
+    <value>Personnalisation</value>
+  </data>
+  <data name="Settings_Theme.Text" xml:space="preserve">
+    <value>Thème</value>
+  </data>
+  <data name="Settings_Theme_Light.Content" xml:space="preserve">
+    <value>Clair</value>
+  </data>
+  <data name="Settings_Theme_Dark.Content" xml:space="preserve">
+    <value>Sombre</value>
+  </data>
+  <data name="Settings_Theme_Default.Content" xml:space="preserve">
+    <value>Paramètres Windows par défaut</value>
+  </data>
   <data name="EditPerson" xml:space="preserve">
     <value>Modifier une personne</value>
   </data>
@@ -268,7 +289,19 @@
     <value>A propos de cette application</value>
   </data>
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
-    <value>Settings page placeholder text.  Your app description goes here.</value>
+    <value>TODO: Replace with your app description.</value>
+  </data>
+  <data name="SettingsPage_PrivacyTermsLink.Content" xml:space="preserve">
+    <value>Privacy Statement</value>
+  </data>
+  <data name="SettingsPage_PrivacyTermsLink.NavigateUri" xml:space="preserve">
+    <value>https://YourPrivacyUrlGoesHere/</value>
+  </data>
+  <data name="Shell_PictureAnalyse.Content" xml:space="preserve">
+    <value>Analyse des images</value>
+  </data>
+  <data name="Shell_People.Content" xml:space="preserve">
+    <value>Analyse des images</value>
   </data>
   <data name="Settings_Api.Text" xml:space="preserve">
     <value>API</value>
@@ -288,25 +321,16 @@
   <data name="Settings_Api_Key.Text" xml:space="preserve">
     <value>Entrez une des deux clés fournies par l'API.</value>
   </data>
-  <data name="Settings_Personalization.Text" xml:space="preserve">
-    <value>Personnalisation</value>
-  </data>
-  <data name="Settings_Theme.Text" xml:space="preserve">
-    <value>Thème</value>
-  </data>
-  <data name="Settings_Theme_Dark.Content" xml:space="preserve">
-    <value>Sombre</value>
-  </data>
-  <data name="Settings_Theme_Default.Content" xml:space="preserve">
-    <value>Paramètres Windows par défaut</value>
-  </data>
-  <data name="Settings_Theme_Light.Content" xml:space="preserve">
-    <value>Clair</value>
-  </data>
   <data name="Shell_FacePeople.Content" xml:space="preserve">
     <value>Gestion des personnes</value>
   </data>
-  <data name="Shell_PictureAnalyse.Content" xml:space="preserve">
-    <value>Analyse des images</value>
+  <data name="PictureAnalyse_FaceDetecting" xml:space="preserve">
+    <value>Détection et identification des visages en cours...</value>
+  </data>
+  <data name="PictureAnalyse_AddingFace" xml:space="preserve">
+    <value>Ajout du visage en cours...</value>
+  </data>
+  <data name="PictureAnalyse_DetectingPeopleFace" xml:space="preserve">
+    <value>Détection des visages en cours...</value>
   </data>
 </root>

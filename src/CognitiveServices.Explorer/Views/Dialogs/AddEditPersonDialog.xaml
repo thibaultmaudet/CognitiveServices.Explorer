@@ -8,23 +8,11 @@
     xmlns:icore="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}"
-    CornerRadius="4" DefaultButton="Primary" Title="{x:Bind ViewModel.Title, Mode=OneWay}" BorderThickness="0" PrimaryButtonText="Valider" IsPrimaryButtonEnabled="{x:Bind ViewModel.EnabledPrimaryButton, Mode=OneWay}" SecondaryButtonText="Annuler" PrimaryButtonCommand="{x:Bind ViewModel.ValidateCommand}">
+    CornerRadius="{StaticResource ControlCornerRadius}" DefaultButton="Primary" BorderThickness="0" PrimaryButtonText="Valider" CloseButtonText="Annuler">
     <Grid MinWidth="300">
         <StackPanel Orientation="Vertical" Spacing="4">
-            <TextBox x:Uid="Face_Person_Add_Name" Height="55" Width="355" Text="{x:Bind ViewModel.Person.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <i:Interaction.Behaviors>
-                    <icore:EventTriggerBehavior EventName="TextChanged">
-                        <icore:InvokeCommandAction Command="{x:Bind ViewModel.TextChangedEventCommand}" />
-                    </icore:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-            </TextBox>
-            <TextBox x:Uid="Face_Person_Add_Picture" Height="55" Width="355" Text="{x:Bind ViewModel.Person.UserData.PictureUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                 <i:Interaction.Behaviors>
-                    <icore:EventTriggerBehavior EventName="TextChanged">
-                        <icore:InvokeCommandAction Command="{x:Bind ViewModel.TextChangedEventCommand}" />
-                    </icore:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-            </TextBox>
+            <TextBox x:Name="PersonName" x:Uid="Face_Person_Add_Name" Height="60" Width="355" Text="{x:Bind PersonWithUserData.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="PersonName_TextChanged"/>
+            <TextBox x:Uid="Face_Person_Add_Picture" Height="60" Width="355" Text="{x:Bind PersonWithUserData.UserData.ImageUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
     </Grid>
 </ContentDialog>

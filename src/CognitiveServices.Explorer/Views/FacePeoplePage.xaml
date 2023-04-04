@@ -6,93 +6,92 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:views="using:CognitiveServices.Explorer.Views"
-    mc:Ignorable="d"
     xmlns:behaviors="using:CognitiveServices.Explorer.Behaviors"
     xmlns:helpers="using:CognitiveServices.Explorer.Helpers"
     xmlns:media="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:models="using:CognitiveServices.Explorer.Core.Models"
     xmlns:viewmodels="using:CognitiveServices.Explorer.ViewModels"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-    Style="{StaticResource PageStyle}">
+    mc:Ignorable="d">
     <Page.Resources>
-        <helpers:ObjectToBooleanConverter x:Key="ObjectToBooleanConverter" />
-        <DataTemplate x:Key="ItemTemplate" x:DataType="models:PersonGroupWithUserData">
-            <Grid Height="60">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE902;"/>
-                <StackPanel Grid.Column="1" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center">
-                    <TextBlock Text="{x:Bind Name}" Style="{StaticResource ListTitleStyle}" />
-                    <TextBlock Text="{x:Bind UserData.Description}" Style="{StaticResource ListSubTitleStyle}" />
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
+		<helpers:ObjectToBooleanConverter x:Key="ObjectToBooleanConverter" />
+		<DataTemplate x:Key="ItemTemplate" x:DataType="models:PersonGroupWithUserData">
+			<Grid Height="60">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE902;"/>
+				<StackPanel Grid.Column="1" Margin="{StaticResource SmallLeftMargin}" VerticalAlignment="Center">
+					<TextBlock Text="{x:Bind Name}" Style="{StaticResource ListTitleStyle}" />
+					<TextBlock Text="{x:Bind UserData.Description}" Style="{StaticResource ListSubTitleStyle}" />
+				</StackPanel>
+			</Grid>
+		</DataTemplate>
 
-        <DataTemplate x:Key="DetailsTemplate" x:DataType="viewmodels:FacePeopleViewModel">
-            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <views:FacePeopleDetailControl PersonGroup="{Binding}" />
-            </Grid>
-        </DataTemplate>
+		<DataTemplate x:Key="DetailsTemplate" x:DataType="viewmodels:FacePeopleViewModel">
+            <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+				<views:FacePeopleDetailControl PersonGroup="{Binding}" />
+			</Grid>
+		</DataTemplate>
 
-        <DataTemplate x:Key="NoSelectionContentTemplate">
-            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <TextBlock x:Uid="Face_People_NoSelection" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            </Grid>
-        </DataTemplate>
+		<DataTemplate x:Key="NoSelectionContentTemplate">
+            <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+				<TextBlock x:Uid="Face_People_NoSelection" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Style="{ThemeResource SubtitleTextBlockStyle}" />
+			</Grid>
+		</DataTemplate>
 
-        <DataTemplate x:Key="ListHeaderTemplate">
-            <Grid Height="40">
-                <TextBlock VerticalAlignment="Center" Style="{StaticResource ListTitleStyle}" Text="{Binding}" />
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="MinimalListHeaderTemplate">
-            <Grid Height="40">
-                <TextBlock Margin="96,0,0,0" VerticalAlignment="Center" Style="{StaticResource ListTitleStyle}" Text="{Binding}" />
-            </Grid>
-        </DataTemplate>
-    </Page.Resources>
+		<DataTemplate x:Key="ListHeaderTemplate">
+			<Grid Height="40">
+				<TextBlock VerticalAlignment="Center" Style="{StaticResource ListTitleStyle}" Text="{Binding}" />
+			</Grid>
+		</DataTemplate>
+		<DataTemplate x:Key="MinimalListHeaderTemplate">
+			<Grid Height="40">
+				<TextBlock Margin="96,0,0,0" VerticalAlignment="Center" Style="{StaticResource ListTitleStyle}" Text="{Binding}" />
+			</Grid>
+		</DataTemplate>
+	</Page.Resources>
 
-    <Grid x:Name="ContentArea">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="641" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="ListDetailsViewControl.ListHeaderTemplate" Value="{StaticResource ListHeaderTemplate}" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-        <controls:ListDetailsView x:Uid="Face_People" x:Name="ListDetailsViewControl" BackButtonBehavior="Automatic" BorderBrush="Transparent" DetailsTemplate="{StaticResource DetailsTemplate}" ItemsSource="{x:Bind ViewModel.PersonGroups, Mode=TwoWay}" ItemTemplate="{StaticResource ItemTemplate}" NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}" SelectedItem="{x:Bind ViewModel.SelectedPersonGroup, Mode=TwoWay}" ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <controls:ListDetailsView.ListCommandBar>
-                <CommandBar OverflowButtonVisibility="Collapsed" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-                    <CommandBar.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Button x:Uid="Face_Group_Add" Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.AddGroupCommand}">
-                                <ToolTipService.ToolTip>
-                                    <ToolTip Placement="Mouse">
-                                        <TextBlock x:Uid="Face_Group_NewGroup"/>
-                                    </ToolTip>
-                                </ToolTipService.ToolTip>
-                                <Button.KeyboardAccelerators>
-                                    <KeyboardAccelerator Modifiers="Control,Shift" Key="N" />
-                                </Button.KeyboardAccelerators>
-                            </Button>
-                            <Button x:Uid="Face_Group_Remove" Margin="{StaticResource XSmallLeftMargin}" IsEnabled="{x:Bind ViewModel.SelectedPersonGroup, Converter={StaticResource ObjectToBooleanConverter}, Mode=OneWay}" Command="{x:Bind ViewModel.RemoveGroupCommand}" />
-                        </StackPanel>
-                    </CommandBar.Content>
-                </CommandBar>
-            </controls:ListDetailsView.ListCommandBar>
-        </controls:ListDetailsView>
-        <controls:Loading x:Name="LoadingControl" IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
-            <controls:Loading.Background>
-                <media:AcrylicBrush TintColor="Black" TintOpacity="0.4"/>
-            </controls:Loading.Background>
-            <TextBlock Text="{x:Bind ViewModel.LoadingText, Mode=OneWay}" VerticalAlignment="Center" Foreground="White" />
-        </controls:Loading>
+	<Grid x:Name="ContentArea">
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup>
+				<VisualState>
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="641" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="ListDetailsViewControl.ListHeaderTemplate" Value="{StaticResource ListHeaderTemplate}" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+		<controls:ListDetailsView x:Uid="Face_People" x:Name="ListDetailsViewControl" BackButtonBehavior="Automatic" BorderBrush="Transparent" DetailsTemplate="{StaticResource DetailsTemplate}" ItemsSource="{x:Bind ViewModel.PersonGroups, Mode=TwoWay}" ItemTemplate="{StaticResource ItemTemplate}" NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}" SelectedItem="{x:Bind ViewModel.SelectedPersonGroup, Mode=TwoWay}" ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}">
+			<controls:ListDetailsView.ListCommandBar>
+				<CommandBar OverflowButtonVisibility="Collapsed">
+					<CommandBar.Content>
+						<StackPanel Orientation="Horizontal">
+							<Button x:Uid="Face_Group_Add" Margin="{StaticResource XSmallLeftMargin}" Command="{x:Bind ViewModel.AddGroupCommand}">
+								<ToolTipService.ToolTip>
+									<ToolTip Placement="Mouse">
+										<TextBlock x:Uid="Face_Group_NewGroup"/>
+									</ToolTip>
+								</ToolTipService.ToolTip>
+								<Button.KeyboardAccelerators>
+									<KeyboardAccelerator Modifiers="Control,Shift" Key="N" />
+								</Button.KeyboardAccelerators>
+							</Button>
+							<Button x:Uid="Face_Group_Remove" Margin="{StaticResource XSmallLeftMargin}" IsEnabled="{x:Bind ViewModel.SelectedPersonGroup, Converter={StaticResource ObjectToBooleanConverter}, Mode=OneWay}" Command="{x:Bind ViewModel.RemoveGroupCommand}" />
+						</StackPanel>
+					</CommandBar.Content>
+				</CommandBar>
+			</controls:ListDetailsView.ListCommandBar>
+		</controls:ListDetailsView>
+		<controls:Loading x:Name="LoadingControl" IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
+			<controls:Loading.Background>
+				<media:AcrylicBrush TintColor="Black" TintOpacity="0.4"/>
+			</controls:Loading.Background>
+			<TextBlock Text="{x:Bind ViewModel.LoadingText, Mode=OneWay}" VerticalAlignment="Center" Foreground="White" />
+		</controls:Loading>
     </Grid>
 </Page>

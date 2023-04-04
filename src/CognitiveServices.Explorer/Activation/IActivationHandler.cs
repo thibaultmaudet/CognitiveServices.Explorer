@@ -1,11 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿namespace CognitiveServices.Explorer.Activation;
 
-namespace CognitiveServices.Explorer.Activation
+public interface IActivationHandler
 {
-    public interface IActivationHandler
-    {
-        bool CanHandle(object args);
+    bool CanHandle(object args);
 
-        Task HandleAsync(object args);
-    }
+    Task HandleAsync(object args);
 }

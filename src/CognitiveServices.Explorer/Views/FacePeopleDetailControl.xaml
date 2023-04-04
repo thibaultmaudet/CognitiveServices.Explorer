@@ -12,7 +12,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <DataTemplate x:Key="ImageTextTemplate" x:DataType="models:ExtendedPerson">
-            <Grid AutomationProperties.Name="{x:Bind Name}" Width="280">
+            <Grid AutomationProperties.Name="{x:Bind Name}" Width="280" Margin="0,20,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -105,7 +105,7 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <ScrollViewer Name="ForegroundElement" HorizontalAlignment="Stretch" VerticalScrollMode="Enabled" Margin="52,20,52,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" IsTabStop="True" Grid.Row="1">
+        <ScrollViewer Name="ForegroundElement" HorizontalAlignment="Stretch" VerticalScrollMode="Enabled" Margin="52,20,0,0" IsTabStop="True" Grid.Row="1">
             <GridView x:Name="ContentGridView" ItemsSource="{x:Bind ViewModel.FilteredPeople, Mode=OneWay}" ItemTemplate="{StaticResource ImageTextTemplate}" SelectionMode="None" Margin="0,30,0,0" IsSynchronizedWithCurrentItem="False" />
         </ScrollViewer>
         <controls:Loading IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" Grid.RowSpan="2">

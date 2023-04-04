@@ -1,0 +1,18 @@
+trigger:
+- master
+- development
+- preprod
+- hotfix
+- feature/*
+- dev/*
+- design/*
+
+name: 0.0.$(Date:yyMM).$(Date:dd)$(Rev:rr)
+
+jobs:
+  - template: ./gitsync.yaml
+    parameters:
+      token: $(githubpersonaltoken)
+  - template: ./build/build-ci.yaml
+    parameters:
+      platform: x64

@@ -1,15 +1,12 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace CognitiveServices.Explorer.Core.Models
+namespace CognitiveServices.Explorer.Core.Models;
+
+public class UserData
 {
-    public class UserData
-    {
-        [JsonProperty(PropertyName = "description")]
-        public string Description { get; set; }
-        [JsonProperty(PropertyName = "pictureUrl")]
-        public string PictureUrl { get; set; }
-    }
+    [JsonProperty(PropertyName = "Description")]
+    public string Description { get; set; }
+    
+    [JsonProperty(PropertyName = "ImageUrl")]
+    public string ImageUrl { get; set; }
 }

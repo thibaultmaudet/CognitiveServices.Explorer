@@ -1,44 +1,40 @@
 ﻿using CognitiveServices.Explorer.Contracts.Services;
-using CognitiveServices.Explorer.ViewModels;
+
 using Microsoft.Azure.CognitiveServices.Vision.Face;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CognitiveServices.Explorer.Services
+namespace CognitiveServices.Explorer.Services;
+
+public class FaceClientService : IFaceClientService
 {
-    public class FaceClientService : IFaceClientService
+    private string faceEndpoint;
+    private string faceKey;
+
+    public FaceClientService(ILocalSettingsService localSettingsService)
     {
-        private IFaceClient faceClient;
+        faceEndpoint = "";
+        faceKey = "";
 
-        private SettingsViewModel settingsViewModel;
-
-        public FaceClientService(IThemeSelectorService themeSelectorService)
+        Task task = Task.Run(async () =>
         {
-            settingsViewModel = new(themeSelectorService);
-        }
+            faceEndpoint = await localSettingsService.ReadSettingAsync<string>("faceEndpoint") ?? "";
+            faceKey = await localSettingsService.ReadSettingAsync<string>("faceKey") ?? "";
+        });
 
-        public IFaceClient FaceClient
-        {
-            get 
-            {
-                if (faceClient == null)
-                    faceClient = new FaceClient(new ApiKeyServiceClientCredentials(FaceKey)) { Endpoint = FaceEndpoint };
+        Task.WaitAll(task);
+    }
 
-                return faceClient;
-            }
-        }
+    public FaceClient? FaceClient
+    {
+        get
+        {            
+            if (!string.IsNullOrEmpty(faceKey))
+                return new FaceClient(new ApiKeyServiceClientCredentials(faceKey)) { Endpoint = faceEndpoint };
 
-        public string FaceEndpoint
-        {
-            get { return settingsViewModel.FaceEndpoint; }
-        }
-
-        public string FaceKey
-        {
-            get { return settingsViewModel.FaceKey; }
+            return default;
         }
     }
+
+    public string FaceEndpoint => faceEndpoint;
+
+    public string FaceKey => faceKey;
 }

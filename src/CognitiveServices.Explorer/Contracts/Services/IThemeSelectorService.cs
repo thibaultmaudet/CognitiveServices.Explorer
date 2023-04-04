@@ -1,17 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.UI.Xaml;
 
-using Microsoft.UI.Xaml;
+namespace CognitiveServices.Explorer.Contracts.Services;
 
-namespace CognitiveServices.Explorer.Contracts.Services
+public interface IThemeSelectorService
 {
-    public interface IThemeSelectorService
-    {
-        ElementTheme Theme { get; }
+    ElementTheme Theme { get; }
 
-        Task InitializeAsync();
+    Task InitializeAsync();
 
-        Task SetThemeAsync(ElementTheme theme);
+    Task SetThemeAsync(ElementTheme theme);
 
-        Task SetRequestedThemeAsync();
-    }
+    Task SetRequestedThemeAsync();
 }

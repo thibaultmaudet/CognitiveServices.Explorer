@@ -4,58 +4,53 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:behaviors="using:CognitiveServices.Explorer.Behaviors"
+	xmlns:behaviors="using:CognitiveServices.Explorer.Behaviors"
     xmlns:converters="using:CognitiveServices.Explorer.Helpers"
-    xmlns:dd="using:CognitiveServices.Explorer.Services.DragAndDrop"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:media="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    mc:Ignorable="d"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-    Style="{StaticResource PageStyle}">
-    <Page.Resources>
-        <converters:StorageFileToImageSourceConverter x:Key="StorageFileToImageSourceConverter"/>
-        <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
-    </Page.Resources>
-    <Grid x:Name="ContentArea" Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" AllowDrop="True">
-        <Grid.Resources>
-            <muxc:CommandBarFlyout x:Name="ImageCommandBar">
-                <muxc:CommandBarFlyout.PrimaryCommands>
+    mc:Ignorable="d">
+	<Page.Resources>
+		<converters:StorageFileToImageSourceConverter x:Key="StorageFileToImageSourceConverter"/>
+		<converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
+	</Page.Resources>
+    <Grid x:Name="ContentArea" AllowDrop="True" DragOver="ContentArea_DragOver" Drop="ContentArea_Drop">
+		<Grid.Resources>
+			<muxc:CommandBarFlyout x:Name="ImageCommandBar">
+				<muxc:CommandBarFlyout.PrimaryCommands>
                     <AppBarButton Icon="OpenFile" Click="OpenImage_Click">
-                        <ToolTipService.ToolTip>
-                            <ToolTip x:Uid="OpenImage" />
-                        </ToolTipService.ToolTip>
-                    </AppBarButton>
-                </muxc:CommandBarFlyout.PrimaryCommands>
-            </muxc:CommandBarFlyout>
-            <MenuFlyout x:Name="ImageMenu">
-                <MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceDetection" Click="StartFaceDetection_Click" />
-                <MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceRecognition" Click="StartFaceRecognition_Click" />
-                <MenuFlyoutSeparator Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}"/>
-                <MenuFlyoutItem x:Uid="PictureAnalyse_AddPersonFace" Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}" Command="{x:Bind ViewModel.AddFaceCommand}"/>
-            </MenuFlyout>
-        </Grid.Resources>
-        <dd:DragDropService.Configuration>
-            <dd:DropConfiguration DropStorageItemsAction="{x:Bind GetStorageItem}"  />
-        </dd:DragDropService.Configuration>
-        <Grid>
+						<ToolTipService.ToolTip>
+							<ToolTip x:Uid="OpenImage" />
+						</ToolTipService.ToolTip>
+					</AppBarButton>
+				</muxc:CommandBarFlyout.PrimaryCommands>
+			</muxc:CommandBarFlyout>
+			<MenuFlyout x:Name="ImageMenu">
+				<MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceDetection" Click="StartFaceDetection_Click" />
+				<MenuFlyoutItem x:Uid="PictureAnalyse_StartFaceRecognition" Click="StartFaceRecognition_Click" />
+				<MenuFlyoutSeparator Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}"/>
+				<MenuFlyoutItem x:Uid="PictureAnalyse_AddPersonFace" Visibility="{x:Bind ViewModel.ImageInfoService.People, Converter={StaticResource ObjectToVisibilityConverter}, ConverterParameter='count:1', Mode=OneWay}" Command="{x:Bind ViewModel.AddFaceCommand}"/>
+			</MenuFlyout>
+		</Grid.Resources>
+		<ScrollViewer>
             <canvas:CanvasVirtualControl x:Name="ImageCanvas" RegionsInvalidated="ImageVirtualControl_RegionsInvalidated" CreateResources="ImageCanvas_CreateResources" Tapped="ImageCanvas_Tapped" PointerMoved="ImageCanvas_PointerMoved" RightTapped="ImageCanvas_RightTapped">
             </canvas:CanvasVirtualControl>
-        </Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="15" Visibility="{x:Bind ViewModel.ImageInfoService.FilePath, Converter={StaticResource ObjectToVisibilityConverter}, Mode=OneWay}">
-            <TextBlock TextAlignment="Center" Style="{StaticResource SubtitleTextBlockStyle}">
-                <Run x:Uid="PictureAnalyse_NoImage" />
-                <LineBreak />
-                <Run x:Uid="PictureAnalyse_OpenIndication" />
-            </TextBlock>
-            <Button x:Uid="OpenImage" HorizontalAlignment="Center"  Click="OpenImage_Click" />
-        </StackPanel>
-        <controls:Loading x:Name="LoadingControl" IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
-            <controls:Loading.Background>
-                <media:AcrylicBrush TintColor="Black" TintOpacity="0.4"/>
-            </controls:Loading.Background>
-            <TextBlock Text="{x:Bind ViewModel.LoadingText, Mode=OneWay}" VerticalAlignment="Center" Foreground="White" />
-        </controls:Loading>
-    </Grid>
+		</ScrollViewer>
+		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="15" Visibility="{x:Bind ViewModel.ImageInfoService.File, Converter={StaticResource ObjectToVisibilityConverter}, Mode=OneWay}">
+			<TextBlock TextAlignment="Center" Style="{StaticResource SubtitleTextBlockStyle}">
+				<Run x:Uid="PictureAnalyse_NoImage" />
+				<LineBreak />
+				<Run x:Uid="PictureAnalyse_OpenIndication" />
+			</TextBlock>
+            <Button x:Uid="OpenImage" HorizontalAlignment="Center" Click="OpenImage_Click" />
+		</StackPanel>
+		<controls:Loading x:Name="LoadingControl" IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
+			<controls:Loading.Background>
+				<media:AcrylicBrush TintColor="Black" TintOpacity="0.4"/>
+			</controls:Loading.Background>
+			<TextBlock Text="{x:Bind ViewModel.LoadingText, Mode=OneWay}" VerticalAlignment="Center" Foreground="White" />
+		</controls:Loading>
+	</Grid>
 </Page>

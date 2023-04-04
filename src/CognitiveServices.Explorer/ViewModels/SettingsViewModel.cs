@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using System.Windows.Input;
 
 using CognitiveServices.Explorer.Contracts.Services;
+using CognitiveServices.Explorer.Contracts.ViewModels;
 using CognitiveServices.Explorer.Helpers;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,108 +11,93 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 
 using Windows.ApplicationModel;
-using Windows.ApplicationModel.Core;
-using Windows.Storage;
-using Windows.UI.Core;
 
-namespace CognitiveServices.Explorer.ViewModels
+namespace CognitiveServices.Explorer.ViewModels;
+
+public class SettingsViewModel : ObservableRecipient, INavigationAware
 {
-    public class SettingsViewModel : ObservableRecipient
+    private readonly ILocalSettingsService localSettingsService;
+    private ElementTheme? elementTheme;
+
+    private string faceEndpoint;
+    private string faceKey;
+    private string versionDescription;
+
+    public ElementTheme? ElementTheme
     {
-        private ElementTheme elementTheme;
+        get => elementTheme;
+        set => SetProperty(ref elementTheme, value);
+    }
 
-        private ICommand switchThemeCommand;
+    public string FaceEndpoint
+    {
+        get => faceEndpoint;
+        set =>SetProperty(ref faceEndpoint, value);
+    }
 
-        private readonly IThemeSelectorService themeSelectorService;
+    public string FaceKey
+    {
+        get => faceKey;
 
-        private string faceEndpoint;
-        private string faceKey;
-        private string versionDescription;
+        set => SetProperty(ref faceKey, value);
+    }
 
-        public ElementTheme ElementTheme
-        {
-            get => elementTheme;
+    public string VersionDescription
+    {
+        get => versionDescription;
+        set => SetProperty(ref versionDescription, value);
+    }
 
-            set => SetProperty(ref elementTheme, value);
-        }
+    public ICommand SwitchThemeCommand
+    {
+        get;
+    }
 
-        public string FaceEndpoint
-        {
-            get
+    public SettingsViewModel(ILocalSettingsService localSettingsService, IThemeSelectorService themeSelectorService)
+    {
+        this.localSettingsService = localSettingsService;
+        elementTheme = themeSelectorService.Theme;
+        versionDescription = GetVersionDescription();
+
+        faceEndpoint = "";
+        faceKey = "";
+
+        SwitchThemeCommand = new RelayCommand<ElementTheme>(
+            async (param) =>
             {
-                if (ApplicationData.Current.LocalSettings.Values["FaceEndpoint"] != null)
-                    faceEndpoint = ApplicationData.Current.LocalSettings.Values["FaceEndpoint"].ToString();
-
-                return faceEndpoint;
-            }
-
-            set
-            {
-                ApplicationData.Current.LocalSettings.Values["FaceEndpoint"] = value;
-                SetProperty(ref faceEndpoint, value);
-            }
-        }
-        
-        public string FaceKey
-        {
-            get
-            {
-                if (ApplicationData.Current.LocalSettings.Values["FaceKey"] != null)
-                    faceKey = ApplicationData.Current.LocalSettings.Values["FaceKey"].ToString();
-
-                return faceKey;
-            }
-
-            set
-            {
-                ApplicationData.Current.LocalSettings.SaveString(nameof(FaceKey), value);
-                SetProperty(ref faceKey, value);
-            }
-        }
-
-        public string VersionDescription
-        {
-            get => versionDescription;
-
-            set => SetProperty(ref versionDescription, value);
-        }
-
-        public ICommand SwitchThemeCommand
-        {
-            get
-            {
-                if (switchThemeCommand == null)
+                if (ElementTheme != param)
                 {
-                    switchThemeCommand = new RelayCommand<ElementTheme>(
-                        async (param) =>
-                        {
-                            if (ElementTheme != param)
-                            {
-                                ElementTheme = param;
-                                await themeSelectorService.SetThemeAsync(param);
-                            }
-                        });
+                    ElementTheme = param;
+                    await themeSelectorService.SetThemeAsync(param);
                 }
+            });
+    }
 
-                return switchThemeCommand;
-            }
-        }
+    public async void OnNavigatedTo(object parameter)
+    {
+        FaceEndpoint = await localSettingsService.ReadSettingAsync<string>("faceEndpoint") ?? "";
+        FaceKey = await localSettingsService.ReadSettingAsync<string>("faceKey") ?? "";
+    }
+    
+    public void OnNavigatedFrom()
+    {
+        localSettingsService.SaveSettingAsync("faceEndpoint", FaceEndpoint);
+        localSettingsService.SaveSettingAsync("faceKey", FaceKey);
+    }
 
-        public SettingsViewModel(IThemeSelectorService themeSelectorService)
+    private static string GetVersionDescription()
+    {
+        Version version;
+
+        if (RuntimeHelper.IsMSIX)
         {
-            this.themeSelectorService = themeSelectorService;
-            elementTheme = themeSelectorService.Theme;
-            VersionDescription = GetVersionDescription();
-        }
+            var packageVersion = Package.Current.Id.Version;
 
-        private string GetVersionDescription()
-        {
-            var appName = "AppDisplayName".GetLocalized();
-            var package = Package.Current;
-            var packageId = package.Id;
-            var version = packageId.Version;
-
-            return $"{appName} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+            version = new(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
         }
+        else
+            version = Assembly.GetExecutingAssembly().GetName().Version!;
+
+        return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
     }
 }

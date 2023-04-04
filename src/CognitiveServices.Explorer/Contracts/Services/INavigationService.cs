@@ -1,18 +1,17 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
-namespace CognitiveServices.Explorer.Contracts.Services
+namespace CognitiveServices.Explorer.Contracts.Services;
+
+public interface INavigationService
 {
-    public interface INavigationService
-    {
-        event NavigatedEventHandler Navigated;
+    event NavigatedEventHandler Navigated;
 
-        bool CanGoBack { get; }
+    bool CanGoBack { get; }
 
-        Frame Frame { get; set; }
+    Frame? Frame { get; set; }
 
-        bool NavigateTo(string pageKey, object parameter = null, bool clearNavigation = false);
+    bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false);
 
-        bool GoBack();
-    }
+    bool GoBack();
 }

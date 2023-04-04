@@ -1,6 +1,7 @@
-﻿using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 
 namespace CognitiveServices.Explorer.Core.Models
 {
@@ -16,26 +17,26 @@ namespace CognitiveServices.Explorer.Core.Models
 
         public DetectedFace DetectedFace
         {
-            get { return detectedFace; }
-            set { SetProperty(ref detectedFace, value); }
+            get => detectedFace;
+            set => SetProperty(ref detectedFace, value);
         }
 
         public IdentifyResult IdentifyResult
         {
-            get { return identifyResult; }
-            set { SetProperty(ref identifyResult, value); }
+            get => identifyResult;
+            set => SetProperty(ref identifyResult, value);
         }
-        
+
         public PersonGroup Group
         {
-            get { return group; }
-            set { SetProperty(ref group, value); }
+            get => group;
+            set => SetProperty(ref group, value);
         }
 
         public string Name
         {
-            get { return name; }
-            set { SetProperty(ref name, value); }
+            get => name;
+            set => SetProperty(ref name, value);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

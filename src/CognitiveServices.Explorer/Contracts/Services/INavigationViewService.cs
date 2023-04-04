@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.UI.Xaml.Controls;
 
-using Microsoft.UI.Xaml.Controls;
+namespace CognitiveServices.Explorer.Contracts.Services;
 
-namespace CognitiveServices.Explorer.Contracts.Services
+public interface INavigationViewService
 {
-    public interface INavigationViewService
-    {
-        IList<object> MenuItems { get; }
+    IList<object>? MenuItems { get; }
 
-        object SettingsItem { get; }
+    object? SettingsItem { get; }
 
-        void Initialize(NavigationView navigationView);
+    void Initialize(NavigationView navigationView);
 
-        void UnregisterEvents();
+    void UnregisterEvents();
 
-        NavigationViewItem GetSelectedItem(Type pageType);
-    }
+    NavigationViewItem? GetSelectedItem(Type pageType);
 }

@@ -1,9 +1,8 @@
-﻿namespace CognitiveServices.Explorer.Behaviors
+﻿namespace CognitiveServices.Explorer.Behaviors;
+
+public enum NavigationViewHeaderMode
 {
-    public enum NavigationViewHeaderMode
-    {
-        Always,
-        Never,
-        Minimal
-    }
+    Always,
+    Never,
+    Minimal
 }
